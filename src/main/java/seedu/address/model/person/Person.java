@@ -33,6 +33,16 @@ public class Person {
         this(name, phone, email, address, new Remark(""), tags);
     }
 
+    /**
+     * Creates a person with the given details and remark.
+     *
+     * @param name person's name
+     * @param phone person's phone number
+     * @param email person's email address
+     * @param address person's address
+     * @param remark person's optional remark
+     * @param tags person's tags
+     */
     public Person(Name name, Phone phone, Email email, Address address, Remark remark, Set<Tag> tags) {
         requireAllNonNull(name, phone, email, address, remark, tags);
         this.name = name;

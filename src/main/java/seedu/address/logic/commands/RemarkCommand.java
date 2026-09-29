@@ -1,7 +1,7 @@
 package seedu.address.logic.commands;
 
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
+import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.List;
 
@@ -28,6 +28,12 @@ public class RemarkCommand extends Command {
         this(index, new Remark(remark));
     }
 
+    /**
+     * Creates a command to update the remark of the person at {@code index}.
+     *
+     * @param index index of the person in the filtered person list
+     * @param remark new remark to assign
+     */
     public RemarkCommand(Index index, Remark remark) {
         CollectionUtil.requireAllNonNull(index, remark);
         this.index = index;
