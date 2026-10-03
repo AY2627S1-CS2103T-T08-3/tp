@@ -31,7 +31,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ### Vu Dang Khoa
 
-<img src="images/chalasdk22.jpg" width="200px">
+<img src="images/chalasdk22.png" width="200px">
 
 [[github](https://github.com/ChalasDK22)]
 
