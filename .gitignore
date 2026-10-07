@@ -21,11 +21,8 @@ src/test/data/sandbox/
 .DS_Store
 docs/_site/
 
-# AI Agents
-AGENTS.md
-CLAUDE.md
-/.claude/
-/.codex/
+# AI Agents(excluded for project wide coding standard conformance)
 
 # Temp files
 _temp/
+/bin/
