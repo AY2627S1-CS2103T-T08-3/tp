@@ -1,19 +1,35 @@
-#copyButton, #helpMessage {
+#helpPanel, #helpMessageContainer, #helpScrollPane, #helpScrollPane > .viewport {
+    -fx-background-color: #383838;
+}
+
+#helpTitle {
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 22px;
     -fx-text-fill: white;
 }
 
-#copyButton {
-    -fx-background-color: dimgray;
+#helpMessage {
+    -fx-font-family: monospace;
+    -fx-font-size: 14px;
+    -fx-line-spacing: 2px;
+    -fx-text-fill: white;
 }
 
-#copyButton:hover {
+#helpScrollPane {
+    -fx-border-color: #555555;
+    -fx-border-width: 1px;
+    -fx-padding: 0;
+}
+
+#closeButton {
+    -fx-background-color: dimgray;
+    -fx-text-fill: white;
+}
+
+#closeButton:hover {
     -fx-background-color: gray;
 }
 
-#copyButton:armed {
+#closeButton:armed {
     -fx-background-color: darkgray;
-}
-
-#helpMessageContainer {
-    -fx-background-color: derive(#1d1d1d, 20%);
 }

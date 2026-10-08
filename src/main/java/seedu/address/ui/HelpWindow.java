@@ -5,8 +5,8 @@ import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import seedu.address.commons.core.LogsCenter;
 
@@ -15,14 +15,59 @@ import seedu.address.commons.core.LogsCenter;
  */
 public class HelpWindow extends UiPart<Stage> {
 
-    public static final String USERGUIDE_URL = "https://se-education.org/addressbook-level3/UserGuide.html";
-    public static final String HELP_MESSAGE = "Refer to the user guide: " + USERGUIDE_URL;
+    public static final String HELP_MESSAGE = """
+            add n/NAME [p/PHONE] [e/EMAIL] t/EVENT_TYPE d/EVENT_DATE
+                Add a contact with event details and at least one contact channel.
+
+            stage INDEX s/STAGE
+                Update the engagement stage of the contact at INDEX.
+
+            edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [t/EVENT_TYPE] [d/EVENT_DATE]
+                Update the supplied details of the contact at INDEX.
+
+            delete INDEX
+                Immediately delete the contact at INDEX.
+
+            find p/PHONE
+                Show contacts whose phone number exactly matches PHONE.
+
+            find e/EMAIL
+                Show contacts whose email address exactly matches EMAIL.
+
+            find t/EVENT_TYPE
+                Show contacts whose event type exactly matches EVENT_TYPE.
+
+            list
+                Show all contacts.
+
+            list sort/date
+                Show all contacts sorted by event date.
+
+            list stage/STAGE
+                Show contacts in the given engagement stage.
+
+            upcoming
+                Show events taking place today or within the next six dates.
+
+            help
+                Open this Help panel.
+
+            Important notes
+            - At least one phone/email is required.
+            - Indexes refer to the current visible list.
+            - Find uses exact matching.
+            - Upcoming includes today plus the next six dates.
+            - Delete is immediate.
+            - Empty phone/email prefixes in Edit clear that field if another channel remains.
+            """;
 
     private static final Logger logger = LogsCenter.getLogger(HelpWindow.class);
     private static final String FXML = "HelpWindow.fxml";
 
+    private final Runnable onHidden;
+
     @FXML
-    private Button copyButton;
+    private Button closeButton;
 
     @FXML
     private Label helpMessage;
@@ -32,16 +77,33 @@ public class HelpWindow extends UiPart<Stage> {
      *
      * @param root Stage to use as the root of the HelpWindow.
      */
-    public HelpWindow(Stage root) {
+    public HelpWindow(Stage root, Runnable onHidden) {
         super(FXML, root);
+        this.onHidden = onHidden;
         helpMessage.setText(HELP_MESSAGE);
+        getRoot().getScene().addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPressed);
+        getRoot().setOnHidden(event -> this.onHidden.run());
     }
 
     /**
      * Creates a new HelpWindow.
      */
     public HelpWindow() {
-        this(new Stage());
+        this(() -> { });
+    }
+
+    /**
+     * Creates a new HelpWindow that invokes {@code onHidden} whenever it closes.
+     */
+    public HelpWindow(Runnable onHidden) {
+        this(new Stage(), onHidden);
+    }
+
+    /**
+     * Creates a new HelpWindow using the supplied stage.
+     */
+    public HelpWindow(Stage root) {
+        this(root, () -> { });
     }
 
     /**
@@ -86,17 +148,23 @@ public class HelpWindow extends UiPart<Stage> {
      * Focuses on the help window.
      */
     public void focus() {
+        getRoot().setIconified(false);
+        getRoot().toFront();
         getRoot().requestFocus();
     }
 
     /**
-     * Copies the URL to the user guide to the clipboard.
+     * Closes the Help panel.
      */
     @FXML
-    private void copyUrl() {
-        final Clipboard clipboard = Clipboard.getSystemClipboard();
-        final ClipboardContent url = new ClipboardContent();
-        url.putString(USERGUIDE_URL);
-        clipboard.setContent(url);
+    private void close() {
+        hide();
+    }
+
+    private void handleKeyPressed(KeyEvent event) {
+        if (event.getCode() == KeyCode.ESCAPE) {
+            close();
+            event.consume();
+        }
     }
 }

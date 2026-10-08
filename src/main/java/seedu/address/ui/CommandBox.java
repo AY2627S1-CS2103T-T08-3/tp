@@ -70,6 +70,13 @@ public class CommandBox extends UiPart<Region> {
     }
 
     /**
+     * Moves keyboard focus to the command input field.
+     */
+    public void requestFocus() {
+        commandTextField.requestFocus();
+    }
+
+    /**
      * Represents a function that can execute commands.
      */
     @FunctionalInterface
