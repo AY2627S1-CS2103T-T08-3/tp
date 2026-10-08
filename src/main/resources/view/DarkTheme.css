@@ -132,6 +132,12 @@
     -fx-text-fill: #010504;
 }
 
+.list-heading {
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+    -fx-padding: 6 10 8 10;
+}
+
 .stack-pane {
      -fx-background-color: derive(#1d1d1d, 20%);
 }

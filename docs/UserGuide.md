@@ -58,7 +58,7 @@ AddressBook Level 3 (AB3) is a **desktop application for managing contacts, opti
 * Parameters can be in any order.<br>
   For example, if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
 
-* Extraneous parameters for commands that take no parameters, such as `help`, `list`, `exit`, and `clear`, are ignored.<br>
+* Extraneous parameters for commands that take no parameters, such as `help`, `exit`, and `clear`, are ignored.<br>
   For example, `help 123` is interpreted as `help`.
 
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
@@ -87,11 +87,41 @@ Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
 
-### Listing all persons: `list`
+### Listing and sorting contacts: `list`
 
-Shows a list of all persons in the address book.
+Use `list` to return to all client engagements after a search or sorted view.
+Use `list sort/date` to review all engagements from the earliest event date to the latest.
+Past events are included. Engagements on the same date stay in the order they were added.
 
-Format: `list`
+Formats:
+* `list` — all contacts in insertion order.
+* `list sort/date` — all contacts by ascending event date.
+
+The heading is `All contacts (N)` or `All contacts by event date (N)`, respectively.
+The result panel reports `Showing N contacts.` With no saved contacts, it reports `No contacts to display.`
+Here, `N` is the number of displayed contacts.
+
+Examples:
+* `list sort/date` brings earlier shoots to the top, including completed dates.
+* `list` restores insertion order after sorting.
+* `LIST SORT/DATE` also works: the list command, prefix and sort value are case-insensitive.
+
+Each command starts from all records, replacing the previous search or sort.
+Displayed indexes are recalculated; subsequent edit/delete commands use the indexes currently shown.
+Sorting does not change the saved records or their insertion order. Restarting restores insertion order.
+
+Only the `sort/` prefix and the value `date` are supported. Spaces and tabs may separate arguments,
+but the command must occupy one line. Stage filtering is not available in v1.2.
+
+| Invalid input | Feedback |
+| --- | --- |
+| `list sort/name` | `Invalid sort option. Use list sort/date.` |
+| `list sort/` | `Empty value for sort/.` |
+| `list sort/date sort/date` | `Duplicate parameter: sort/.` |
+| `list stage/Booked` | `Unsupported parameter: stage/.` |
+| `list 3` or `list sort/date extra` | `Invalid command format. Usage: list [sort/date]` |
+
+Unsupported prefixes are rejected. Invalid list commands leave both the data and current view unchanged.
 
 ### Editing a person: `edit`
 
@@ -194,5 +224,5 @@ Action | Format, Examples
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g., `edit 2 n/James Lee e/jameslee@example.com`
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
-**List** | `list`
+**List** | `list` or `list sort/date`
 **Help** | `help`

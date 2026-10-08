@@ -20,6 +20,11 @@ public interface Logic {
      */
     CommandResult execute(String commandText) throws CommandException, ParseException;
 
+    /**
+     * Returns the current list heading, including its displayed contact count.
+     */
+    String getPersonListHeading();
+
     /** Returns an unmodifiable view of the filtered list of persons */
     ObservableList<Person> getFilteredPersonList();
 
