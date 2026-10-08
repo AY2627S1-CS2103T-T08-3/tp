@@ -304,13 +304,13 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **MSS**
 
 1.  User requests to add a contact, giving the client's name, phone number, email address, event type and event date.
-2.  ShutterLink adds the contact and shows the full contact list.
+2.  ShutterLink adds the contact with the stage _Enquiry_ and shows the full contact list.
 
     Use case ends.
 
 **Extensions**
 
-* 1a. A required detail is missing, or a given detail is invalid.
+* 1a. A required detail (name, phone number, email address, event type or event date) is missing, or a given detail is invalid.
 
     * 1a1. ShutterLink shows an error message describing the first problem found.
     * 1a2. User requests to add the contact again with corrected details.
@@ -318,7 +318,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
       Steps 1a1-1a2 are repeated until the details are valid.<br>
       Use case resumes from step 2.
 
-* 1b. A contact with the same name already exists.
+* 1b. A contact with exactly the same name, phone number, email address, event type and event date already exists.
 
     * 1b1. ShutterLink informs the user that the contact already exists and does not add it.
 
@@ -330,20 +330,26 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC02 - Find contacts by name**
+**Use case: UC02 - Find contacts by name, contact detail or event type**
 
 **MSS**
 
-1.  User requests to find contacts, giving one or more name keywords.
-2.  ShutterLink shows all contacts whose names contain any of the given keywords, ignoring letter case.
+1.  User requests to find contacts, giving one name, phone number, email address or event type.
+2.  ShutterLink shows all contacts that exactly match the given value.
 
     Use case ends.
 
 **Extensions**
 
-* 1a. User gives no search keyword.
+* 1a. User gives no search value, or more than one.
 
-    * 1a1. ShutterLink shows an error message.
+    * 1a1. ShutterLink shows an error message asking for exactly one search value.
+
+      Use case resumes at step 1.
+
+* 1b. The given value is invalid (e.g., an incomplete email address).
+
+    * 1b1. ShutterLink shows an error message.
 
       Use case resumes at step 1.
 
@@ -353,7 +359,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Proposed use case: UC03 - Update the engagement stage of a contact**
+**Use case: UC03 - Update the engagement stage of a contact**
 
 **MSS**
 
@@ -423,15 +429,27 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case resumes at step 2.
 
-* 3c. The edited contact would have the same name as another existing contact.
+* 3c. The edit would leave any required detail (name, phone number, email address, event type or event date) missing.
 
-    * 3c1. ShutterLink informs the user that the edit would create a duplicate and does not change the contact.
+    * 3c1. ShutterLink shows an error message and does not change the contact.
 
       Use case resumes at step 2.
 
-* 3d. ShutterLink is unable to save the data.
+* 3d. The edited contact would be identical to another existing contact.
 
-    * 3d1. ShutterLink shows an error message and does not change the contact.
+    * 3d1. ShutterLink informs the user that the edit would create a duplicate and does not change the contact.
+
+      Use case resumes at step 2.
+
+* 3e. All given values are the same as the current details.
+
+    * 3e1. ShutterLink informs the user that no changes were made and keeps the current list.
+
+      Use case ends.
+
+* 3f. ShutterLink is unable to save the data.
+
+    * 3f1. ShutterLink shows an error message and does not change the contact.
 
       Use case ends.
 
@@ -464,7 +482,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Proposed use case: UC06 - Follow up on engagements at a stage**
+**Use case: UC06 - Follow up on engagements at a stage**
 
 **MSS**
 
@@ -490,7 +508,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Proposed use case: UC07 - Prepare for upcoming events**
+**Use case: UC07 - Prepare for upcoming events**
 
 **MSS**
 
