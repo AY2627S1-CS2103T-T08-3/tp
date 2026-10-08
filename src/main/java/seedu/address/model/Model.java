@@ -60,7 +60,18 @@ public interface Model {
      */
     void setPerson(Person target, Person editedPerson);
 
-    /** Returns an unmodifiable view of the filtered person list */
+    /**
+     * Shows all persons in insertion order, or by ascending event date with insertion-order ties.
+     * Does not reorder the underlying address book.
+     */
+    void showAllPersons(boolean isSortedByDate);
+
+    /**
+     * Returns a heading describing the current person view and its count.
+     */
+    String getPersonListHeading();
+
+    /** Returns an unmodifiable view of the filtered person list in displayed order */
     ObservableList<Person> getFilteredPersonList();
 
     /**

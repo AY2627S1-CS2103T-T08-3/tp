@@ -151,6 +151,29 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
+### Listing contacts and sorting by event date
+
+`ListCommandParser` accepts `list` and `list sort/date`, rejecting extra positional arguments,
+unsupported/repeated prefixes, empty values and invalid sort options before changing the model.
+List-specific parsing is case-insensitive and preserves raw arguments to reject embedded control characters.
+Stage filtering is deferred; `stage/` is currently an unsupported list parameter.
+
+`ListCommand` calls `Model#showAllPersons` to clear the current filter and select an ordering.
+`ModelManager` exposes a `SortedList<Person>` over its `FilteredList<Person>` to the UI and index-based commands.
+For date sorting, it compares the existing `EventDate.value` (`LocalDate`) and breaks ties by the record's
+position in the underlying address book. Plain listing removes the comparator, restoring insertion order.
+The stored list itself is never sorted. Updating a filter removes date sorting so a later search is in
+insertion order. Deleting from a date-sorted view resets that view after selecting the displayed contact.
+
+`LogicManager` skips storage writes for `ListCommand`: viewing records does not require write access to the
+JSON file. Other commands retain their existing saving behaviour. `Model#getPersonListHeading` supplies the
+heading and count through `Logic`; `MainWindow` refreshes a simple label in `PersonListPanel` after successful
+commands. A filtered view uses the neutral placeholder `Contacts (N)` for future search-UI refinement.
+Person 4 can restyle this label independently of the list/sort behaviour.
+
+Tests cover empty and single-record lists, past/future dates, ties, filter/sort resets, displayed-index
+edit/delete integration, failed-input view preservation and unchanged persisted order across restarts.
+
 ### \[Proposed\] Undo/redo feature
 
 #### Proposed Implementation
@@ -622,6 +645,19 @@ testers are expected to do more *exploratory* testing.
        Expected: The most recent window size and location are retained.
 
 1. _{ more test cases …​ }_
+
+### Listing and sorting contacts
+
+1. Use a dataset with insertion order A (2030-12-31), B (2000-02-29), C (2000-02-29).
+2. Run `list sort/date`. Expect B, C, A, indexes 1–3, heading `All contacts by event date (3)`,
+   and feedback `Showing 3 contacts.` Repeating the command must retain B before C.
+3. Run `list sort/name`. Expect an invalid-sort error and the same B, C, A view.
+4. Run `list`. Expect A, B, C and heading `All contacts (3)`.
+5. Search for one contact, then run either list variant. Expect all three contacts again.
+6. With no saved contacts, run each variant. Expect an empty list, the corresponding heading with `(0)`,
+   and `No contacts to display.`
+7. In a disposable dataset, sort and delete index 1. Expect the earliest displayed contact to be removed,
+   not the first contact in insertion order. Restart after a successful save and verify insertion order.
 
 ### Deleting a person
 
