@@ -4,17 +4,76 @@ import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
-import java.util.List;
-
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.FindCommand;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.PersonSearchPredicate;
 
 public class FindCommandParserTest {
 
     private FindCommandParser parser = new FindCommandParser();
+    private static final String INVALID_FORMAT =
+            String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE);
 
+    @Test
+    public void parse_name_success() throws Exception {
+        FindCommand expected = new FindCommand(
+                new PersonSearchPredicate(
+                        PersonSearchPredicate.Field.NAME,
+                        "Alice Pauline"));
 
+        assertParseSuccess(parser, "n/Alice Pauline", expected);
+    }
+
+    @Test
+    public void parse_phone_success() throws Exception {
+        FindCommand expected = new FindCommand(
+                new PersonSearchPredicate(
+                        PersonSearchPredicate.Field.PHONE,
+                        "91234567"));
+
+        assertParseSuccess(parser, "p/91234567", expected);
+
+    }
+
+    @Test
+    public void parse_email_success() throws Exception {
+        FindCommand expected = new FindCommand(
+                new PersonSearchPredicate(
+                        PersonSearchPredicate.Field.EMAIL,
+                        "alice@example.com"));
+
+        assertParseSuccess(parser, "e/alice@example.com", expected);
+    }
+
+    @Test
+    public void parse_eventType_success() throws Exception {
+        FindCommand expected = new FindCommand(
+                new PersonSearchPredicate(
+                        PersonSearchPredicate.Field.EVENT_TYPE,
+                        "Wedding"));
+
+        assertParseSuccess(parser, "t/Wedding", expected);
+    }
+
+    @Test
+    public void parse_multipleFields_throwsParseException() {
+        assertParseFailure(parser, "n/Alice p/91234567", INVALID_FORMAT);
+    }
+
+    @Test
+    public void parse_emptyValue_throwsParseException() {
+        assertParseFailure(parser, "n/", INVALID_FORMAT);
+    }
+
+    @Test
+    public void parse_duplicateField_throwsParseException() {
+        assertParseFailure(parser, "n/Alice n/Bob", INVALID_FORMAT);
+    }
+
+    @Test
+    public void parse_missingPrefix_throwsParseException() {
+        assertParseFailure(parser, "Alice", INVALID_FORMAT);
+    }
 
 }
