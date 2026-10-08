@@ -22,7 +22,7 @@ public class FindCommandParserTest {
                         PersonSearchPredicate.Field.NAME,
                         "Alice Pauline"));
 
-        assertParseSuccess(parser, "n/Alice Pauline", expected);
+        assertParseSuccess(parser, " n/Alice Pauline", expected);
     }
 
     @Test
@@ -32,7 +32,7 @@ public class FindCommandParserTest {
                         PersonSearchPredicate.Field.PHONE,
                         "91234567"));
 
-        assertParseSuccess(parser, "p/91234567", expected);
+        assertParseSuccess(parser, " p/91234567", expected);
 
     }
 
@@ -43,7 +43,7 @@ public class FindCommandParserTest {
                         PersonSearchPredicate.Field.EMAIL,
                         "alice@example.com"));
 
-        assertParseSuccess(parser, "e/alice@example.com", expected);
+        assertParseSuccess(parser, " e/alice@example.com", expected);
     }
 
     @Test
@@ -53,12 +53,12 @@ public class FindCommandParserTest {
                         PersonSearchPredicate.Field.EVENT_TYPE,
                         "Wedding"));
 
-        assertParseSuccess(parser, "t/Wedding", expected);
+        assertParseSuccess(parser, " t/Wedding", expected);
     }
 
     @Test
     public void parse_multipleFields_throwsParseException() {
-        assertParseFailure(parser, "n/Alice p/91234567", INVALID_FORMAT);
+        assertParseFailure(parser, " n/Alice p/91234567", INVALID_FORMAT);
     }
 
     @Test
