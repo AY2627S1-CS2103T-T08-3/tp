@@ -75,6 +75,8 @@ public class ParserUtilTest {
     public void parseEventType_valuesHandled() throws Exception {
         assertThrows(NullPointerException.class, () -> ParserUtil.parseEventType(null));
         assertThrows(ParseException.class, () -> ParserUtil.parseEventType(INVALID_EVENT_TYPE));
+        assertThrows(ParseException.class, () -> ParserUtil.parseEventType("Wedding!"));
+        assertThrows(ParseException.class, () -> ParserUtil.parseEventType("a".repeat(EventType.MAX_LENGTH + 1)));
         EventType expected = new EventType(VALID_EVENT_TYPE);
         assertEquals(expected, ParserUtil.parseEventType(VALID_EVENT_TYPE));
         assertEquals(expected, ParserUtil.parseEventType(WHITESPACE + VALID_EVENT_TYPE + WHITESPACE));
@@ -85,6 +87,7 @@ public class ParserUtilTest {
     public void parseEventDate_valuesHandled() throws Exception {
         assertThrows(NullPointerException.class, () -> ParserUtil.parseEventDate(null));
         assertThrows(ParseException.class, () -> ParserUtil.parseEventDate(INVALID_EVENT_DATE));
+        assertThrows(ParseException.class, () -> ParserUtil.parseEventDate("0000-01-01"));
         EventDate expected = new EventDate(VALID_EVENT_DATE);
         assertEquals(expected, ParserUtil.parseEventDate(VALID_EVENT_DATE));
         assertEquals(expected, ParserUtil.parseEventDate(WHITESPACE + VALID_EVENT_DATE + WHITESPACE));

@@ -69,11 +69,11 @@ public class ParserUtil {
      */
     public static EventType parseEventType(String eventType) throws ParseException {
         requireNonNull(eventType);
-        String trimmedEventType = eventType.trim().replaceAll("[ \\t]+", " ");
-        if (!EventType.isValidEventType(trimmedEventType)) {
+        String normalizedEventType = StringUtil.normalizeWhitespace(eventType);
+        if (!EventType.isValidEventType(normalizedEventType)) {
             throw new ParseException(EventType.MESSAGE_CONSTRAINTS);
         }
-        return new EventType(trimmedEventType);
+        return new EventType(normalizedEventType);
     }
 
     /**
