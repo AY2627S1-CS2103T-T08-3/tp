@@ -63,13 +63,13 @@ public class ParserUtil {
 
     /**
      * Parses a {@code String eventType} into an {@code EventType}.
-     * Leading and trailing whitespaces will be trimmed.
+     * Leading and trailing whitespaces will be trimmed, and consecutive spaces or tabs will be replaced by one space.
      *
      * @throws ParseException if the given {@code eventType} is invalid.
      */
     public static EventType parseEventType(String eventType) throws ParseException {
         requireNonNull(eventType);
-        String trimmedEventType = eventType.trim();
+        String trimmedEventType = eventType.trim().replaceAll("[ \\t]+", " ");
         if (!EventType.isValidEventType(trimmedEventType)) {
             throw new ParseException(EventType.MESSAGE_CONSTRAINTS);
         }

@@ -78,6 +78,7 @@ public class ParserUtilTest {
         EventType expected = new EventType(VALID_EVENT_TYPE);
         assertEquals(expected, ParserUtil.parseEventType(VALID_EVENT_TYPE));
         assertEquals(expected, ParserUtil.parseEventType(WHITESPACE + VALID_EVENT_TYPE + WHITESPACE));
+        assertEquals(new EventType("Corporate 2026"), ParserUtil.parseEventType("Corporate \t  2026"));
     }
 
     @Test
