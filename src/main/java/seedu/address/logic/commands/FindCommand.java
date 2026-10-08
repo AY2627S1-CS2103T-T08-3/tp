@@ -5,12 +5,11 @@ import static java.util.Objects.requireNonNull;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.model.Model;
-import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonSearchPredicate;
 
 /**
- * Finds and lists all persons in the address book whose name contains any of the argument keywords.
- * Keyword matching is case insensitive.
+ * Finds and lists contacts whose selected field contains the search value.
+ * Matching is case-insensitive.
  */
 public class FindCommand extends Command {
 
@@ -27,6 +26,11 @@ public class FindCommand extends Command {
 
     private final PersonSearchPredicate predicate;
 
+    /**
+     * Creates a command that filters contacts using the given predicate.
+     *
+     * @param predicate the predicate used to select matching contacts
+     */
     public FindCommand(PersonSearchPredicate predicate) {
         this.predicate = predicate;
     }

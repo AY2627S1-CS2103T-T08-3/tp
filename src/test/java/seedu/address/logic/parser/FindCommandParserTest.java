@@ -11,9 +11,9 @@ import seedu.address.model.person.PersonSearchPredicate;
 
 public class FindCommandParserTest {
 
-    private FindCommandParser parser = new FindCommandParser();
     private static final String INVALID_FORMAT =
             String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE);
+    private final FindCommandParser parser = new FindCommandParser();
 
     @Test
     public void parse_name_success() throws Exception {
