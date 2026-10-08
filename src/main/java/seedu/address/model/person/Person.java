@@ -52,7 +52,8 @@ public class Person {
     }
 
     /**
-     * Returns true if both persons have the same name.
+     * Returns true if both persons represent the same engagement, i.e., they have the same name, phone, email,
+     * event type and event date. Name, email and event type are compared case-insensitively.
      * This defines a weaker notion of equality between two persons.
      */
     public boolean isSamePerson(Person otherPerson) {
@@ -61,7 +62,11 @@ public class Person {
         }
 
         return otherPerson != null
-                && otherPerson.getName().equals(getName());
+                && name.fullName.equalsIgnoreCase(otherPerson.name.fullName)
+                && phone.equals(otherPerson.phone)
+                && email.value.equalsIgnoreCase(otherPerson.email.value)
+                && eventType.value.equalsIgnoreCase(otherPerson.eventType.value)
+                && eventDate.equals(otherPerson.eventDate);
     }
 
     /**

@@ -6,10 +6,10 @@
     "eventType": "Wedding",
     "eventDate": "2026-01-01"
   }, {
-    "name": "Alice Pauline",
+    "name": "alice pauline",
     "phone": "94351253",
-    "email": "pauline@example.com",
-    "eventType": "Portrait",
-    "eventDate": "2026-02-02"
+    "email": "alice@example.com",
+    "eventType": "wedding",
+    "eventDate": "2026-01-01"
   } ]
 }
