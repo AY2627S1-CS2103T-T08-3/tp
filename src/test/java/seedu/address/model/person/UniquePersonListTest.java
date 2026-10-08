@@ -40,8 +40,8 @@ public class UniquePersonListTest {
     @Test
     public void contains_personWithSameIdentityFieldsInList_returnsTrue() {
         uniquePersonList.add(ALICE);
-        Person editedAlice = new PersonBuilder(ALICE).withEventType(VALID_EVENT_TYPE_BOB)
-                .withEventDate(VALID_EVENT_DATE_BOB).build();
+        Person editedAlice = new PersonBuilder(ALICE).withName(ALICE.getName().fullName.toUpperCase())
+                .withEventType(ALICE.getEventType().value.toLowerCase()).build();
         assertTrue(uniquePersonList.contains(editedAlice));
     }
 
