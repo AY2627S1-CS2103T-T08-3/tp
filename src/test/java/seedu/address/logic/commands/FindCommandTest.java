@@ -6,18 +6,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalPersons.CARL;
-import static seedu.address.testutil.TypicalPersons.ELLE;
-import static seedu.address.testutil.TypicalPersons.FIONA;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.Person;
+import seedu.address.model.person.PersonSearchPredicate;
+import seedu.address.testutil.PersonBuilder;
 
 /**
  * Contains integration tests (interaction with the Model) for {@code FindCommand}.
@@ -28,63 +29,106 @@ public class FindCommandTest {
 
     @Test
     public void equals() {
-        NameContainsKeywordsPredicate firstPredicate =
-                new NameContainsKeywordsPredicate(List.of("first"));
-        NameContainsKeywordsPredicate secondPredicate =
-                new NameContainsKeywordsPredicate(List.of("second"));
+        PersonSearchPredicate firstPredicate = new PersonSearchPredicate(
+                PersonSearchPredicate.Field.NAME,
+                "Alice Pauline");
+
+        PersonSearchPredicate secondPredicate = new PersonSearchPredicate(
+                PersonSearchPredicate.Field.NAME,
+                "Benson Meier");
 
         FindCommand findFirstCommand = new FindCommand(firstPredicate);
         FindCommand findSecondCommand = new FindCommand(secondPredicate);
 
-        // same object -> returns true
         assertTrue(findFirstCommand.equals(findFirstCommand));
 
-        // same values -> returns true
         FindCommand findFirstCommandCopy = new FindCommand(firstPredicate);
         assertTrue(findFirstCommand.equals(findFirstCommandCopy));
 
-        // different types -> returns false
         assertFalse(findFirstCommand.equals(1));
-
-        // null -> returns false
         assertFalse(findFirstCommand.equals(null));
-
-        // different person -> returns false
         assertFalse(findFirstCommand.equals(findSecondCommand));
     }
 
     @Test
-    public void execute_zeroKeywords_noPersonFound() {
-        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
-        NameContainsKeywordsPredicate predicate = preparePredicate(" ");
+    public void execute_noMatch_noPersonFound() {
+        PersonSearchPredicate predicate = new PersonSearchPredicate(
+                PersonSearchPredicate.Field.NAME,
+                "Unknown Person");
+
         FindCommand command = new FindCommand(predicate);
         expectedModel.updateFilteredPersonList(predicate);
-        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+
+        assertCommandSuccess(
+                command,
+                model,
+                "No matching contacts found.",
+                expectedModel);
+
         assertEquals(List.of(), model.getFilteredPersonList());
     }
 
+
     @Test
-    public void execute_multipleKeywords_multiplePersonsFound() {
-        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 3);
-        NameContainsKeywordsPredicate predicate = preparePredicate("Kurz Elle Kunz");
+    public void execute_exactName_onePersonFound() {
+        PersonSearchPredicate predicate = new PersonSearchPredicate(
+                PersonSearchPredicate.Field.NAME,
+                "Carl Kurz");
+
         FindCommand command = new FindCommand(predicate);
         expectedModel.updateFilteredPersonList(predicate);
+
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
+
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(List.of(CARL, ELLE, FIONA), model.getFilteredPersonList());
+        assertEquals(List.of(CARL), model.getFilteredPersonList());
+    }
+
+    @Test
+    public void execute_partialName_matchesMultipleClients() {
+        Person jonathanWong = new PersonBuilder()
+                .withName("Jonathan Wong")
+                .build();
+
+        Person jonathanTan = new PersonBuilder()
+                .withName("Jonathan Tan")
+                .build();
+
+        Person alicePauline = new PersonBuilder()
+                .withName("Alice Pauline")
+                .build();
+
+        AddressBook addressBook = new AddressBook();
+        addressBook.addPerson(jonathanWong);
+        addressBook.addPerson(jonathanTan);
+        addressBook.addPerson(alicePauline);
+
+        Model testModel = new ModelManager(addressBook, new UserPrefs());
+
+        PersonSearchPredicate predicate = new PersonSearchPredicate(
+                PersonSearchPredicate.Field.NAME,
+                "Jonathan");
+
+        FindCommand command = new FindCommand(predicate);
+        command.execute(testModel);
+
+        assertEquals(
+                List.of(jonathanWong, jonathanTan),
+                testModel.getFilteredPersonList());
     }
 
     @Test
     public void toStringMethod() {
-        NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(List.of("keyword"));
+        PersonSearchPredicate predicate = new PersonSearchPredicate(
+                PersonSearchPredicate.Field.NAME,
+                "Alice Pauline");
+
         FindCommand findCommand = new FindCommand(predicate);
-        String expected = FindCommand.class.getCanonicalName() + "{predicate=" + predicate + "}";
+
+        String expected = FindCommand.class.getCanonicalName()
+                + "{predicate=" + predicate + "}";
+
         assertEquals(expected, findCommand.toString());
     }
 
-    /**
-     * Parses {@code userInput} into a {@code NameContainsKeywordsPredicate}.
-     */
-    private NameContainsKeywordsPredicate preparePredicate(String userInput) {
-        return new NameContainsKeywordsPredicate(List.of(userInput.split("\\s+")));
-    }
 }

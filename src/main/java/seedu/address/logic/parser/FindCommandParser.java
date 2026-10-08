@@ -1,33 +1,75 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_EVENT_TYPE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 
 import java.util.List;
 
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.PersonSearchPredicate;
 
 /**
- * Parses input arguments and creates a new FindCommand object
+ * Parses input arguments and creates a new {@link FindCommand} object.
  */
 public class FindCommandParser implements Parser<FindCommand> {
+    private static final List<Prefix> SEARCH_PREFIXES = List.of(
+            PREFIX_NAME,
+            PREFIX_PHONE,
+            PREFIX_EMAIL,
+            PREFIX_EVENT_TYPE);
 
-    /**
-     * Parses the given {@code String} of arguments in the context of the FindCommand
-     * and returns a FindCommand object for execution.
-     * @throws ParseException if the user input does not conform to the expected format
-     */
+    @Override
     public FindCommand parse(String args) throws ParseException {
-        String trimmedArgs = args.trim();
-        if (trimmedArgs.isEmpty()) {
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(
+                args,
+                PREFIX_NAME,
+                PREFIX_PHONE,
+                PREFIX_EMAIL,
+                PREFIX_EVENT_TYPE);
+
+        argMultimap.verifyNoDuplicatePrefixesFor(
+                PREFIX_NAME,
+                PREFIX_PHONE,
+                PREFIX_EMAIL,
+                PREFIX_EVENT_TYPE);
+
+        List<Prefix> suppliedPrefixes = SEARCH_PREFIXES.stream()
+                .filter(prefix -> argMultimap.getValue(prefix).isPresent())
+                .toList();
+
+        boolean hasInvalidPreamble = !argMultimap.getPreamble().trim().isEmpty();
+
+        if (suppliedPrefixes.size() != 1 || hasInvalidPreamble) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
 
-        String[] nameKeywords = trimmedArgs.split("\\s+");
+        Prefix suppliedPrefix = suppliedPrefixes.get(0);
+        String searchValue = argMultimap.getValue(suppliedPrefix)
+                .orElse("")
+                .trim();
 
-        return new FindCommand(new NameContainsKeywordsPredicate(List.of(nameKeywords)));
+        if (searchValue.isEmpty()) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+        }
+
+        PersonSearchPredicate.Field field;
+
+        if (suppliedPrefix.equals(PREFIX_NAME)) {
+            field = PersonSearchPredicate.Field.NAME;
+        } else if (suppliedPrefix.equals(PREFIX_PHONE)) {
+            field = PersonSearchPredicate.Field.PHONE;
+        } else if (suppliedPrefix.equals(PREFIX_EMAIL)) {
+            field = PersonSearchPredicate.Field.EMAIL;
+        } else {
+            field = PersonSearchPredicate.Field.EVENT_TYPE;
+        }
+
+        return new FindCommand(new PersonSearchPredicate(field, searchValue));
     }
-
 }
