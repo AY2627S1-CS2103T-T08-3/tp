@@ -12,10 +12,14 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
-import seedu.address.model.UserPrefs;
+import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonSearchPredicate;
+import seedu.address.model.UserPrefs;
+import seedu.address.testutil.PersonBuilder;
+
 
 /**
  * Contains integration tests (interaction with the Model) for {@code FindCommand}.
@@ -79,6 +83,39 @@ public class FindCommandTest {
 
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
         assertEquals(List.of(CARL), model.getFilteredPersonList());
+    }
+
+    @Test
+    public void execute_partialName_matchesMultipleClients() {
+        Person jonathanWong = new PersonBuilder()
+                .withName("Jonathan Wong")
+                .build();
+
+        Person jonathanTan = new PersonBuilder()
+                .withName("Jonathan Tan")
+                .build();
+
+        Person alicePauline = new PersonBuilder()
+                .withName("Alice Pauline")
+                .build();
+
+        AddressBook addressBook = new AddressBook();
+        addressBook.addPerson(jonathanWong);
+        addressBook.addPerson(jonathanTan);
+        addressBook.addPerson(alicePauline);
+
+        Model testModel = new ModelManager(addressBook, new UserPrefs());
+
+        PersonSearchPredicate predicate = new PersonSearchPredicate(
+                PersonSearchPredicate.Field.NAME,
+                "Jonathan");
+
+        FindCommand command = new FindCommand(predicate);
+        command.execute(testModel);
+
+        assertEquals(
+                List.of(jonathanWong, jonathanTan),
+                testModel.getFilteredPersonList());
     }
 
     @Test

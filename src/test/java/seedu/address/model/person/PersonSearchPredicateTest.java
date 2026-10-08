@@ -35,12 +35,12 @@ public class PersonSearchPredicateTest {
     }
 
     @Test
-    public void partialNameMatch_returnsFalse() {
+    public void partialNameMatch_returnsTrue() {
         PersonSearchPredicate predicate = new PersonSearchPredicate(
                 PersonSearchPredicate.Field.NAME,
                 "Alice");
 
-        assertFalse(predicate.test(person));
+        assertTrue(predicate.test(person));
     }
 
     @Test
@@ -53,12 +53,12 @@ public class PersonSearchPredicateTest {
     }
 
     @Test
-    public void partialPhoneMatch_returnsFalse() {
+    public void partialPhoneMatch_returnsTrue() {
         PersonSearchPredicate predicate = new PersonSearchPredicate(
                 PersonSearchPredicate.Field.PHONE,
                 "9123");
 
-        assertFalse(predicate.test(person));
+        assertTrue(predicate.test(person));
     }
 
     @Test
@@ -71,12 +71,12 @@ public class PersonSearchPredicateTest {
     }
 
     @Test
-    public void partialEmailMatch_returnsFalse() {
+    public void partialEmailMatch_returnsTrue() {
         PersonSearchPredicate predicate = new PersonSearchPredicate(
                 PersonSearchPredicate.Field.EMAIL,
                 "alice@");
 
-        assertFalse(predicate.test(person));
+        assertTrue(predicate.test(person));
     }
 
     @Test
@@ -84,6 +84,15 @@ public class PersonSearchPredicateTest {
         PersonSearchPredicate predicate = new PersonSearchPredicate(
                 PersonSearchPredicate.Field.EVENT_TYPE,
                 "Wedding");
+
+        assertTrue(predicate.test(person));
+    }
+
+    @Test
+    public void partialEventTypeMatch_returnsTrue() {
+        PersonSearchPredicate predicate = new PersonSearchPredicate(
+                PersonSearchPredicate.Field.EVENT_TYPE,
+                "Wed");
 
         assertTrue(predicate.test(person));
     }

@@ -1,13 +1,13 @@
 package seedu.address.model.person;
-
+import java.util.Locale;
 import static java.util.Objects.requireNonNull;
-
 import java.util.function.Predicate;
-
 import seedu.address.commons.util.ToStringBuilder;
+
 
 /**
  * Tests whether a person's selected field exactly matches the search value.
+ * Matching is case-insensitive.
  */
 public class PersonSearchPredicate implements Predicate<Person> {
     public enum Field {
@@ -33,7 +33,8 @@ public class PersonSearchPredicate implements Predicate<Person> {
             case EVENT_TYPE -> person.getEventType().value;
         };
 
-        return actualValue.equalsIgnoreCase(searchValue);
+        return actualValue.toLowerCase(Locale.ROOT)
+                .contains(searchValue.toLowerCase(Locale.ROOT));
     }
 
     @Override
