@@ -15,9 +15,11 @@ import seedu.address.commons.core.LogsCenter;
  */
 public class HelpWindow extends UiPart<Stage> {
 
+    public static final String USERGUIDE_URL = "https://se-education.org/addressbook-level3/UserGuide.html";
+
     public static final String HELP_MESSAGE = """
             add n/NAME [p/PHONE] [e/EMAIL] t/EVENT_TYPE d/EVENT_DATE
-                Add a contact with event details and at least one contact channel.
+                Add a contact with event details.
 
             edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [t/EVENT_TYPE] [d/EVENT_DATE]
                 Update the supplied details of the contact at INDEX.
@@ -45,15 +47,8 @@ public class HelpWindow extends UiPart<Stage> {
 
             help
                 Open this Help panel.
-
-            Important notes
-            - At least one phone/email is required.
-            - Indexes refer to the current visible list.
-            - Find uses exact matching.
-            - Upcoming includes today plus the next six dates.
-            - Delete is immediate.
-            - Empty phone/email prefixes in Edit clear that field if another channel remains.
-            """;
+            """
+            + "\nRefer to the user guide: " + USERGUIDE_URL;
 
     private static final Logger logger = LogsCenter.getLogger(HelpWindow.class);
     private static final String FXML = "HelpWindow.fxml";
