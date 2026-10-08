@@ -21,7 +21,9 @@ src/test/data/sandbox/
 .DS_Store
 docs/_site/
 
-# AI Agents(excluded for project wide coding standard conformance)
+# AI Agents (AGENTS.md, CLAUDE.md and .agents/ are shared; personal agent settings are not)
+/.claude/settings.local.json
+/CLAUDE.local.md
 
 # Temp files
 _temp/
