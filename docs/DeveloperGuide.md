@@ -123,16 +123,11 @@ How the parsing works:
 The `Model` component,
 
 * stores the address book data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
+* represents each `Person` as one photography engagement containing a client's `Name`, `Phone`, `Email`,
+  `EventType`, and `EventDate`.
 * stores the `Person` objects selected by the current filter, such as search results, in a separate _filtered_ list. It exposes this list as an unmodifiable `ObservableList<Person>` that the UI can observe and bind to, so the UI updates when the list changes.
 * stores a `UserPrefs` object that represents the user’s preferences (currently, just the GUI settings). This is exposed to the outside as a `ReadOnlyUserPrefs` object.
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The alternative, arguably more object-oriented, design below keeps a unique list of tags in `AddressBook`, and each `Person` references tags from that list. This lets `AddressBook` maintain one `Tag` object per unique tag instead of each `Person` holding its own `Tag` objects.<br>
-
-<img src="images/BetterModelClassDiagram.png" width="450" />
-
-</div>
-
 
 ### Storage component
 
@@ -143,6 +138,7 @@ The `Model` component,
 The `Storage` component,
 * can save both address book data and user preference data in JSON format, and read them back into corresponding objects.
 * is implemented by `StorageManager`, which delegates the actual JSON file access to `JsonAddressBookStorage` and `JsonUserPrefsStorage` (one class per data file).
+* converts each `Person` to and from a `JsonAdaptedPerson`, including its event type and ISO-8601 event date.
 * depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
 
 ### Common classes
@@ -307,14 +303,14 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1.  User requests to add a contact, giving the client's name, phone number and/or email address, event type and event date.
-2.  ShutterLink adds the contact with the stage _Enquiry_ and shows the full contact list.
+1.  User requests to add a contact, giving the client's name, phone number, email address, event type and event date.
+2.  ShutterLink adds the contact and shows the full contact list.
 
     Use case ends.
 
 **Extensions**
 
-* 1a. A required detail (name, event type or event date) is missing, or a given detail is invalid.
+* 1a. A required detail is missing, or a given detail is invalid.
 
     * 1a1. ShutterLink shows an error message describing the first problem found.
     * 1a2. User requests to add the contact again with corrected details.
@@ -322,44 +318,32 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
       Steps 1a1-1a2 are repeated until the details are valid.<br>
       Use case resumes from step 2.
 
-* 1b. Neither a phone number nor an email address is given.
+* 1b. A contact with the same name already exists.
 
-    * 1b1. ShutterLink shows an error message asking for at least one of them.
-
-      Use case resumes at step 1.
-
-* 1c. A contact with exactly the same name, phone number, email address, event type and event date already exists.
-
-    * 1c1. ShutterLink informs the user that the contact already exists and does not add it.
+    * 1b1. ShutterLink informs the user that the contact already exists and does not add it.
 
       Use case ends.
 
-* 1d. ShutterLink is unable to save the data.
+* 1c. ShutterLink is unable to save the data.
 
-    * 1d1. ShutterLink shows an error message and does not add the contact.
+    * 1c1. ShutterLink shows an error message and does not add the contact.
 
       Use case ends.
 
-**Use case: UC02 - Find contacts by name, contact detail or event type**
+**Use case: UC02 - Find contacts by name**
 
 **MSS**
 
-1.  User requests to find contacts, giving one name, phone number, email address or event type.
-2.  ShutterLink shows all contacts that exactly match the given value.
+1.  User requests to find contacts, giving one or more name keywords.
+2.  ShutterLink shows all contacts whose names contain any of the given keywords, ignoring letter case.
 
     Use case ends.
 
 **Extensions**
 
-* 1a. User gives no search value, or more than one.
+* 1a. User gives no search keyword.
 
-    * 1a1. ShutterLink shows an error message asking for exactly one search value.
-
-      Use case resumes at step 1.
-
-* 1b. The given value is invalid (e.g., an incomplete email address).
-
-    * 1b1. ShutterLink shows an error message.
+    * 1a1. ShutterLink shows an error message.
 
       Use case resumes at step 1.
 
@@ -369,7 +353,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC03 - Update the engagement stage of a contact**
+**Proposed use case: UC03 - Update the engagement stage of a contact**
 
 **MSS**
 
@@ -439,27 +423,15 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case resumes at step 2.
 
-* 3c. The edit would leave the contact with neither a phone number nor an email address.
+* 3c. The edited contact would have the same name as another existing contact.
 
-    * 3c1. ShutterLink shows an error message and does not change the contact.
-
-      Use case resumes at step 2.
-
-* 3d. The edited contact would be identical to another existing contact.
-
-    * 3d1. ShutterLink informs the user that the edit would create a duplicate and does not change the contact.
+    * 3c1. ShutterLink informs the user that the edit would create a duplicate and does not change the contact.
 
       Use case resumes at step 2.
 
-* 3e. All given values are the same as the current details.
+* 3d. ShutterLink is unable to save the data.
 
-    * 3e1. ShutterLink informs the user that no changes were made and keeps the current list.
-
-      Use case ends.
-
-* 3f. ShutterLink is unable to save the data.
-
-    * 3f1. ShutterLink shows an error message and does not change the contact.
+    * 3d1. ShutterLink shows an error message and does not change the contact.
 
       Use case ends.
 
@@ -492,7 +464,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC06 - Follow up on engagements at a stage**
+**Proposed use case: UC06 - Follow up on engagements at a stage**
 
 **MSS**
 
@@ -518,7 +490,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
       Use case ends.
 
-**Use case: UC07 - Prepare for upcoming events**
+**Proposed use case: UC07 - Prepare for upcoming events**
 
 **MSS**
 
