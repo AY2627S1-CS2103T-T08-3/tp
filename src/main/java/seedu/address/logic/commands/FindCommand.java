@@ -5,7 +5,8 @@ import static java.util.Objects.requireNonNull;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.model.Model;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.Person;
+import seedu.address.model.person.PersonSearchPredicate;
 
 /**
  * Finds and lists all persons in the address book whose name contains any of the argument keywords.
@@ -15,14 +16,18 @@ public class FindCommand extends Command {
 
     public static final String COMMAND_WORD = "find";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names contain any of "
-            + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
-            + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
-            + "Example: " + COMMAND_WORD + " alice bob charlie";
+    public static final String MESSAGE_USAGE = COMMAND_WORD
+            + ": Finds contacts by exactly one field.\n"
+            + "Parameters: n/NAME, p/PHONE, e/EMAIL, or t/EVENT_TYPE\n"
+            + "Examples:\n"
+            + "find n/Alice Pauline\n"
+            + "find p/91234567\n"
+            + "find e/alice@example.com\n"
+            + "find t/Wedding";
 
-    private final NameContainsKeywordsPredicate predicate;
+    private final PersonSearchPredicate predicate;
 
-    public FindCommand(NameContainsKeywordsPredicate predicate) {
+    public FindCommand(PersonSearchPredicate predicate) {
         this.predicate = predicate;
     }
 
@@ -30,6 +35,13 @@ public class FindCommand extends Command {
     public CommandResult execute(Model model) {
         requireNonNull(model);
         model.updateFilteredPersonList(predicate);
+
+        int numberOfMatches = model.getFilteredPersonList().size();
+
+        if (numberOfMatches == 0) {
+            return new CommandResult("No matching contacts found.");
+        }
+
         return new CommandResult(
                 String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()));
     }
