@@ -19,9 +19,6 @@ public class HelpWindow extends UiPart<Stage> {
             add n/NAME [p/PHONE] [e/EMAIL] t/EVENT_TYPE d/EVENT_DATE
                 Add a contact with event details and at least one contact channel.
 
-            stage INDEX s/STAGE
-                Update the engagement stage of the contact at INDEX.
-
             edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [t/EVENT_TYPE] [d/EVENT_DATE]
                 Update the supplied details of the contact at INDEX.
 
@@ -42,9 +39,6 @@ public class HelpWindow extends UiPart<Stage> {
 
             list sort/date
                 Show all contacts sorted by event date.
-
-            list stage/STAGE
-                Show contacts in the given engagement stage.
 
             upcoming
                 Show events taking place today or within the next six dates.
