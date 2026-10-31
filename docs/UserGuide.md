@@ -64,6 +64,7 @@ In the event schedule chart, **Upcoming** means an event dated today through the
 inclusive. **Past** means before today, while **Later** means seven or more days after today. The chart follows the
 current displayed list, so a `find`, `list`, or `upcoming` command can change its proportions.
 It summarizes the view only; use `upcoming` when you want the engagement list itself filtered and sorted by date.
+The chart recalculates after the displayed list changes or the app restarts; it does not refresh automatically at midnight.
 
 The displayed index is a temporary position, not a permanent client ID. After a search, sort, add, edit, advance, or deletion, check the list again before choosing an index. `edit 1` affects the first engagement currently shown, which may be a different engagement from the first one in the full list.
 

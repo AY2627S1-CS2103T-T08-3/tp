@@ -63,13 +63,13 @@
                        maxHeight="100" VBox.vgrow="ALWAYS" />
           </VBox>
 
-          <HBox alignment="CENTER_LEFT" minWidth="360" prefWidth="460" minHeight="180" prefHeight="180"
+          <HBox alignment="CENTER_LEFT" minWidth="320" prefWidth="340" maxWidth="360" minHeight="130" prefHeight="130" maxHeight="130"
                 styleClass="event-schedule-panel">
-            <PieChart fx:id="eventScheduleChart" minWidth="0" prefWidth="300"
+            <PieChart fx:id="eventScheduleChart" minWidth="0" prefWidth="130"
                       legendVisible="false" title="Event schedule" HBox.hgrow="ALWAYS" />
-            <VBox alignment="CENTER_LEFT" minWidth="130" prefWidth="170" maxWidth="220"
-                  spacing="10" styleClass="event-schedule-legend">
-              <Label fx:id="pastLegend" style="-fx-text-fill: #94a3b8" />
+            <VBox alignment="CENTER_LEFT" minWidth="120" prefWidth="140" maxWidth="160"
+                  spacing="4" styleClass="event-schedule-legend">
+              <Label fx:id="pastLegend" style="-fx-text-fill: #64748b" />
               <Label fx:id="upcomingLegend" style="-fx-text-fill: #38bdf8" />
               <Label fx:id="laterLegend" style="-fx-text-fill: #a78bfa" />
             </VBox>
