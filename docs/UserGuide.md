@@ -68,6 +68,9 @@ copying, or use **Copy details** to copy all fields to the clipboard. Press Esca
 widen the main window and use the horizontal scrollbar where available. The overview screenshot uses a wider window
 to show all six columns.
 
+Saved window positions are restored when enough of the title bar is on an available screen. Otherwise,
+ShutterLink centers the window, for example after a monitor is disconnected. The saved size is unchanged.
+
 ### Try a client workflow
 
 Use these commands in order to follow an example engagement. Replace the sample client details with your own when you start using the app for real work.
@@ -472,8 +475,6 @@ If a previously populated list unexpectedly opens empty after manual editing, us
 --------------------------------------------------------------------------------------------------------------------
 
 ## Known issues
-
-1. **A window can reopen off-screen after disconnecting a monitor.** Close ShutterLink, move `preferences.json` from the launch folder to a backup location, and restart. This resets window placement without deleting `data/addressbook.json`.
 
 1. **Curly and straight apostrophes are different characters in names.** Names are stored exactly as typed, so
    `O’Connor` (curly apostrophe, often inserted by autocorrect) and `O'Connor` are treated as different clients. If

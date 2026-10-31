@@ -2,8 +2,10 @@ package seedu.address.commons.core;
 
 import java.awt.Point;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
+import javafx.geometry.Rectangle2D;
 import seedu.address.commons.util.ToStringBuilder;
 
 /**
@@ -47,6 +49,15 @@ public class GuiSettings implements Serializable {
 
     public Point getWindowCoordinates() {
         return windowCoordinates != null ? new Point(windowCoordinates) : null;
+    }
+
+    /**
+     * Returns whether a usable portion of the saved title bar is inside a connected screen's work area.
+     * A 160-by-40 area keeps enough of the title bar reachable to move the window.
+     */
+    public boolean hasVisibleWindowTitle(List<Rectangle2D> screens) {
+        return windowCoordinates != null && screens.stream().anyMatch(screen ->
+                screen.contains(windowCoordinates.getX(), windowCoordinates.getY(), 160, 40));
     }
 
     @Override

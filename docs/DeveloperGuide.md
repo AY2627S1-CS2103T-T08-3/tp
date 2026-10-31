@@ -758,6 +758,7 @@ testers are expected to do more *exploratory* testing.
 
    1. Relaunch the app by running `java -jar shutterlink.jar` again.<br>
        Expected: The most recent window size and location are retained.
+       If a saved monitor has been disconnected, expect the window to be centered on an available screen instead.
 
 ### Viewing upcoming events
 
