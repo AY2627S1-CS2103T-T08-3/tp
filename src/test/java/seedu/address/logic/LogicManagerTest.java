@@ -80,8 +80,8 @@ public class LogicManagerTest {
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.showAllPersons(true);
 
-        assertCommandFailure("find n/Amy s/Booked", ParseException.class,
-                String.format(Messages.MESSAGE_UNSUPPORTED_PARAMETER, "s/"), expectedModel);
+        assertCommandFailure("find n/Amy d/2026-12-20", ParseException.class,
+                String.format(Messages.MESSAGE_UNSUPPORTED_PARAMETER, "d/"), expectedModel);
         assertEquals(expectedModel.getPersonListHeading(), model.getPersonListHeading());
     }
 

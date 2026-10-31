@@ -288,8 +288,9 @@ email, and event type comparisons are case-insensitive.
 
 ### Finding engagements
 
-`FindCommandParser` requires exactly one of `n/`, `p/`, `e/`, or `t/` with a non-blank search value. It does not
-validate the search text as a complete field value. `PersonSearchPredicate` performs a case-insensitive substring
+`FindCommandParser` requires exactly one of `n/`, `p/`, `e/`, `t/`, or `s/` with a non-blank search value. For `s/`,
+it reuses `ParserUtil#parseStage` and `PersonSearchPredicate` matches the complete canonical stage name, ignoring
+capitalization. The other search fields do not require complete field values and use a case-insensitive substring
 comparison against the selected stored field. Consequently, `find e/alice@` is valid and can match
 `alice@example.com`. Phone values and phone search text are normalized by removing spaces and hyphens, so formatted
 searches such as `find p/9123-4567` can match a stored `91234567`.

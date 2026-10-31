@@ -228,7 +228,7 @@ Displayed indexes are recalculated; subsequent edit, advance, and delete command
 Sorting does not change the saved records or their insertion order. Restarting restores insertion order.
 
 Only the `sort/` prefix and the value `date` are supported. Spaces and tabs may separate arguments,
-but the command must occupy one line. Stage filtering is not available in the current version.
+but the command must occupy one line. Use `find s/STAGE` to filter by stage; `list` does not accept a stage filter.
 
 | Invalid input | Feedback |
 | --- | --- |
@@ -310,6 +310,9 @@ Find engagements whose selected field contains the search text. Matching is case
 values; the search text itself is not required to satisfy that field's add/edit format. Spaces and hyphens in phone
 searches are ignored.
 
+For stages, use `find s/STAGE` with a complete stage name: `Enquiry`, `Booked`, `Shot Completed`,
+`Awaiting Payment`, or `Delivered`. Stage matching ignores capitalization but does not accept partial names.
+
 Format:
 
 ```text
@@ -317,12 +320,14 @@ find n/SEARCH_TEXT
 find p/SEARCH_TEXT
 find e/SEARCH_TEXT
 find t/SEARCH_TEXT
+find s/STAGE
 ```
 Where:
 * `n/` searches client names.
 * `p/` searches stored phone numbers.
 * `e/` searches email addresses.
 * `t/` searches event types.
+* `s/` matches a complete engagement stage, for example `find s/awaiting payment`.
 
 Examples:
 * `find n/Jonathan` finds `Jonathan Wong` and `Jonathan Tan`.
@@ -334,7 +339,7 @@ Phone numbers are stored without spaces or hyphens, so searching with digits onl
 from all saved engagements and replaces the previous search or sort. The heading becomes `Engagements (N)`; edit,
 advance, and delete use the displayed result indexes. Use `list` to restore every engagement.
 
-The whole search value is matched as a substring: `find n/John Tan` looks for that phrase, rather than separate matches for `John` or `Tan`. `find p/9123` can match several engagements, including repeat clients. Spaces and hyphens are removed from phone searches, so `find p/9123 4567` and `find p/9123-4567` can match a stored `91234567`. With no matches, the list is empty and feedback is `No matching engagements found.`; run `list` to restore your records.
+For name, phone, email, and event type, the whole search value is matched as a substring: `find n/John Tan` looks for that phrase, rather than separate matches for `John` or `Tan`. `find p/9123` can match several engagements, including repeat clients. Spaces and hyphens are removed from phone searches, so `find p/9123 4567` and `find p/9123-4567` can match a stored `91234567`. With no matches, the list is empty and feedback is `No matching engagements found.`; run `list` to restore your records.
 
 | Invalid input | Reason |
 | --- | --- |
@@ -452,8 +457,8 @@ If a previously populated list unexpectedly opens empty after manual editing, us
 **Q**: Why did a command affect a different engagement than expected?<br>
 **A**: Indexes refer to the list currently on screen. Add, edit, and advance return to the full list, which can change indexes. Search again and check the event details before acting on a record.
 
-**Q**: Why can I not filter by stage or add free-text notes?<br>
-**A**: These are not available in the current version. Stages can be displayed, edited, or advanced, and you can search by name, phone, email, or event type.
+**Q**: How can I filter by stage, and can I add free-text notes?<br>
+**A**: Use `find s/STAGE`, for example `find s/Booked`. Free-text notes are not available in the current version.
 
 ## Troubleshooting
 
@@ -491,7 +496,7 @@ Action | Format, Examples
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [t/EVENT_TYPE] [d/EVENT_DATE] [s/STAGE]`<br> e.g., `edit 2 n/James Lee s/Booked`
-**Find** | `find n/SEARCH_TEXT`, `find p/SEARCH_TEXT`, `find e/SEARCH_TEXT`, or `find t/SEARCH_TEXT`<br> e.g., `find n/James`
+**Find** | `find n/SEARCH_TEXT`, `find p/SEARCH_TEXT`, `find e/SEARCH_TEXT`, `find t/SEARCH_TEXT`, or `find s/STAGE`<br> e.g., `find n/James` or `find s/Booked`
 **List** | `list` or `list sort/date`
 **Upcoming events** | `upcoming`
 **Help** | `help`

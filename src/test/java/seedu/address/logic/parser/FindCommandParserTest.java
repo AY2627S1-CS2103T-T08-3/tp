@@ -5,10 +5,14 @@ import static seedu.address.logic.Messages.MESSAGE_UNSUPPORTED_PARAMETER;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
+import java.util.Locale;
+
 import org.junit.jupiter.api.Test;
 
+import seedu.address.logic.Messages;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.model.person.PersonSearchPredicate;
+import seedu.address.model.person.Stage;
 
 public class FindCommandParserTest {
 
@@ -18,7 +22,6 @@ public class FindCommandParserTest {
 
     @Test
     public void parse_unsupportedPrefix_throwsParseException() {
-        assertParseFailure(parser, " n/Alice s/Booked", String.format(MESSAGE_UNSUPPORTED_PARAMETER, "s/"));
         assertParseFailure(parser, " n/Alice d/2026-12-20", String.format(MESSAGE_UNSUPPORTED_PARAMETER, "d/"));
         assertParseFailure(parser, " n/Alice x/oops", String.format(MESSAGE_UNSUPPORTED_PARAMETER, "x/"));
         assertParseFailure(parser, " x/oops n/Alice", String.format(MESSAGE_UNSUPPORTED_PARAMETER, "x/"));
@@ -80,6 +83,8 @@ public class FindCommandParserTest {
     @Test
     public void parse_multipleFields_throwsParseException() {
         assertParseFailure(parser, " n/Alice p/91234567", INVALID_FORMAT);
+        assertParseFailure(parser, " n/Alice s/Booked", INVALID_FORMAT);
+        assertParseFailure(parser, " s/Booked t/Wedding", INVALID_FORMAT);
     }
 
     @Test
@@ -91,11 +96,29 @@ public class FindCommandParserTest {
     @Test
     public void parse_duplicateField_throwsParseException() {
         assertParseFailure(parser, "n/Alice n/Bob", INVALID_FORMAT);
+        assertParseFailure(parser, " s/Booked s/Enquiry",
+                Messages.getErrorMessageForDuplicatePrefixes(CliSyntax.PREFIX_STAGE));
     }
 
     @Test
     public void parse_missingPrefix_throwsParseException() {
         assertParseFailure(parser, "Alice", INVALID_FORMAT);
+    }
+
+    @Test
+    public void parse_completeStageNames_caseInsensitiveSuccess() {
+        for (Stage stage : Stage.values()) {
+            String value = stage.toString().toLowerCase(Locale.ROOT);
+            assertParseSuccess(parser, " s/ " + value + " ", new FindCommand(
+                    new PersonSearchPredicate(PersonSearchPredicate.Field.STAGE, stage.toString())));
+        }
+    }
+
+    @Test
+    public void parse_invalidStage_rejectsEmptyPartialAndUnknownValues() {
+        for (String value : new String[]{"", " ", "Book", "Completed", "Unknown", "Booked extra"}) {
+            assertParseFailure(parser, " s/" + value, Stage.MESSAGE_CONSTRAINTS);
+        }
     }
 
 }
