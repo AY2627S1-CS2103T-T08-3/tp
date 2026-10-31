@@ -103,7 +103,7 @@ public class FindCommandParserTest {
      * Returns the expected error message when {@code prefix} is the first unsupported prefix.
      */
     private static String unsupportedParameterMessage(String prefix) {
-        return String.format(MESSAGE_UNSUPPORTED_PARAMETER, prefix)
+        return String.format(MESSAGE_UNSUPPORTED_PARAMETER, prefix) + " "
                 + String.format(MESSAGE_SUPPORTED_PARAMETERS, "n/ p/ e/ t/");
     }
 }

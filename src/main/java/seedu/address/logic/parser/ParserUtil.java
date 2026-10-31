@@ -51,7 +51,7 @@ public class ParserUtil {
                 String supportedList = Stream.of(supportedPrefixes)
                         .map(Prefix::getPrefix)
                         .collect(Collectors.joining(" "));
-                throw new ParseException(String.format(Messages.MESSAGE_UNSUPPORTED_PARAMETER, prefix)
+                throw new ParseException(String.format(Messages.MESSAGE_UNSUPPORTED_PARAMETER, prefix) + " "
                         + String.format(Messages.MESSAGE_SUPPORTED_PARAMETERS, supportedList));
             }
         }
