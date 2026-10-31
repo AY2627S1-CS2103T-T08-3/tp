@@ -84,6 +84,11 @@ public class FindCommandParserTest {
     }
 
     @Test
+    public void parse_prefixedValueWithPreamble_throwsParseException() {
+        assertParseFailure(parser, "Alice n/Bob", INVALID_FORMAT);
+    }
+
+    @Test
     public void parse_emptyValue_throwsParseException() {
         assertParseFailure(parser, "n/", INVALID_FORMAT);
         assertParseFailure(parser, "p/ - ", INVALID_FORMAT);

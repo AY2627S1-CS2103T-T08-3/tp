@@ -32,6 +32,8 @@ class PersonCardTooltipTest {
             Person second = new PersonBuilder().withName("Different Client").withStage("Delivered").build();
             for (Person person : List.of(first, second)) {
                 PersonCard card = new PersonCard(person, 1);
+                Label id = (Label) card.getRoot().lookup("#id");
+                assertEquals("1. ", id.getText());
                 Map<String, String> expectedFields = Map.of(
                         "name", person.getName().fullName,
                         "phone", person.getPhone().value,

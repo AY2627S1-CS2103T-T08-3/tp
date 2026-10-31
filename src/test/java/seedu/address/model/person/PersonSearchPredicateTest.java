@@ -1,7 +1,10 @@
 package seedu.address.model.person;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.testutil.Assert.assertThrows;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,6 +26,17 @@ public class PersonSearchPredicateTest {
                 .withEmail("alice@example.com")
                 .withEventType("Wedding")
                 .build();
+    }
+
+    @Test
+    public void constructor_nullField_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> new PersonSearchPredicate(null, "Alice"));
+    }
+
+    @Test
+    public void constructor_nullSearchValue_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> new PersonSearchPredicate(PersonSearchPredicate.Field.NAME,
+                null));
     }
 
     @Test
@@ -132,5 +146,41 @@ public class PersonSearchPredicateTest {
                 "Unknown Person");
 
         assertFalse(predicate.test(person));
+    }
+
+    @Test
+    public void searchValueWithWhitespace_isTrimmed() {
+        PersonSearchPredicate predicate = new PersonSearchPredicate(
+                PersonSearchPredicate.Field.NAME,
+                "  Alice  ");
+
+        assertTrue(predicate.test(person));
+    }
+
+    @Test
+    public void equals_sameFieldAndCaseInsensitiveValue_returnsTrue() {
+        PersonSearchPredicate predicate = new PersonSearchPredicate(
+                PersonSearchPredicate.Field.NAME,
+                "Alice");
+        PersonSearchPredicate equivalentPredicate = new PersonSearchPredicate(
+                PersonSearchPredicate.Field.NAME,
+                "alice");
+
+        assertEquals(predicate, predicate);
+        assertEquals(predicate, equivalentPredicate);
+    }
+
+    @Test
+    public void equals_differentFieldValueOrType_returnsFalse() {
+        PersonSearchPredicate predicate = new PersonSearchPredicate(
+                PersonSearchPredicate.Field.NAME,
+                "Alice");
+
+        assertNotEquals(predicate,
+                new PersonSearchPredicate(PersonSearchPredicate.Field.EMAIL, "Alice"));
+        assertNotEquals(predicate,
+                new PersonSearchPredicate(PersonSearchPredicate.Field.NAME, "Bob"));
+        assertNotEquals(predicate, null);
+        assertNotEquals(predicate, new Object());
     }
 }
