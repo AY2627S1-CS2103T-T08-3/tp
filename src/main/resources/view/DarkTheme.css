@@ -409,6 +409,7 @@
     -fx-accent: #38bdf8;
     -fx-focus-color: #38bdf8;
     -fx-faint-focus-color: rgba(56, 189, 248, 0.18);
+    -error-colour: #fb7185;
 }
 
 .app-title {
@@ -527,12 +528,25 @@
 }
 
 #commandTextField.error {
-    -fx-border-color: #fb7185;
+    -fx-border-color: -error-colour;
     -fx-text-fill: #fecdd3;
 }
 
 .result-display {
     -fx-text-fill: #a7f3d0;
+}
+
+/* Feedback containing a warning, such as a possible typo after add or edit. */
+.result-display.warning {
+    -fx-text-fill: #fcd34d;
+    -fx-border-color: #f59e0b;
+    -fx-border-width: 0 0 0 4;
+}
+
+.result-display.feedback-error {
+    -fx-text-fill: -error-colour;
+    -fx-border-color: -error-colour;
+    -fx-border-width: 0 0 0 4;
 }
 
 #resultDisplay .content {

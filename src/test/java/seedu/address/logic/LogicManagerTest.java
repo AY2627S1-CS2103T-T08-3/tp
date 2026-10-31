@@ -81,7 +81,8 @@ public class LogicManagerTest {
         expectedModel.showAllPersons(true);
 
         assertCommandFailure("find n/Amy d/2026-12-20", ParseException.class,
-                String.format(Messages.MESSAGE_UNSUPPORTED_PARAMETER, "d/"), expectedModel);
+                String.format(Messages.MESSAGE_UNSUPPORTED_PARAMETER, "d/") + " "
+                + String.format(Messages.MESSAGE_SUPPORTED_PARAMETERS, "n/ p/ e/ t/ s/"), expectedModel);
         assertEquals(expectedModel.getPersonListHeading(), model.getPersonListHeading());
     }
 

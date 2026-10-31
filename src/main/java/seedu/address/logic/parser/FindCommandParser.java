@@ -60,13 +60,20 @@ public class FindCommandParser implements Parser<FindCommand> {
                 .orElse("")
                 .trim();
 
+        if (suppliedPrefix.equals(PREFIX_PHONE)) {
+            searchValue = Phone.removeSeparators(searchValue);
+        }
+        if (searchValue.isEmpty()) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+        }
+
         PersonSearchPredicate.Field field;
 
         if (suppliedPrefix.equals(PREFIX_NAME)) {
             field = PersonSearchPredicate.Field.NAME;
         } else if (suppliedPrefix.equals(PREFIX_PHONE)) {
             field = PersonSearchPredicate.Field.PHONE;
-            searchValue = Phone.removeSeparators(searchValue);
         } else if (suppliedPrefix.equals(PREFIX_EMAIL)) {
             field = PersonSearchPredicate.Field.EMAIL;
         } else if (suppliedPrefix.equals(PREFIX_STAGE)) {
@@ -74,11 +81,6 @@ public class FindCommandParser implements Parser<FindCommand> {
             searchValue = ParserUtil.parseStage(searchValue).toString();
         } else {
             field = PersonSearchPredicate.Field.EVENT_TYPE;
-        }
-
-        if (searchValue.isEmpty()) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
 
         return new FindCommand(new PersonSearchPredicate(field, searchValue));
