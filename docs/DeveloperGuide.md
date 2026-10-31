@@ -90,7 +90,7 @@ class, which provides common functionality for loading and managing their corres
 
 The UI is implemented using JavaFX. Its main parts include:
 
-* `MainWindow`, which contains the main application layout.
+* `MainWindow`, which contains the main application layout and event schedule chart.
 * `CommandBox`, which accepts user commands.
 * `ResultDisplay`, which displays feedback messages.
 * `PersonListPanel`, which displays the filtered and sorted list of engagements.
@@ -106,7 +106,10 @@ The `UI` component,
 * displays command results returned by `Logic`;
 * observes the filtered and sorted engagement list exposed through `Logic`;
 * depends on selected `Model` classes when displaying engagement data;
-* updates the displayed engagements whenever the observed list changes.
+* updates the displayed engagements and event schedule chart whenever the observed list changes.
+
+`MainWindow` rebuilds the chart's Past, Upcoming (today through today + 6 days), and Later slices when the displayed
+`ObservableList<Person>` changes. The chart summarizes the current view and does not modify or save model data.
 
 `ResultDisplay` colours its feedback by outcome: results are green, results containing a warning are amber (see
 [Detecting duplicate engagements and possible typos](#detecting-duplicate-engagements-and-possible-typos)), and
@@ -295,8 +298,9 @@ email, and event type comparisons are case-insensitive.
 
 ### Finding engagements
 
-`FindCommandParser` requires exactly one of `n/`, `p/`, `e/`, or `t/` with a non-blank search value. It does not
-validate the search text as a complete field value. `PersonSearchPredicate` performs a case-insensitive substring
+`FindCommandParser` requires exactly one of `n/`, `p/`, `e/`, `t/`, or `s/` with a non-blank search value. For `s/`,
+it reuses `ParserUtil#parseStage` and `PersonSearchPredicate` matches the complete canonical stage name, ignoring
+capitalization. The other search fields do not require complete field values and use a case-insensitive substring
 comparison against the selected stored field. Consequently, `find e/alice@` is valid and can match
 `alice@example.com`. Phone values and phone search text are normalized by removing spaces and hyphens, so formatted
 searches such as `find p/9123-4567` can match a stored `91234567`.
@@ -769,6 +773,8 @@ testers are expected to do more *exploratory* testing.
 
    1. Relaunch the app by running `java -jar shutterlink.jar` again.<br>
        Expected: The most recent window size and location are retained.
+       If a saved monitor has been disconnected, expect the fallback position to keep the title bar on the primary
+       screen, even when the saved window is larger than that screen. The saved size is unchanged.
 
 ### Viewing upcoming events
 
