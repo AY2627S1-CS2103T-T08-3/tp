@@ -205,8 +205,8 @@ ordinary success message:
 
 Each `#INDEX` refers to the full list shown after the command, and the text in brackets states which details are
 shared. The same number written with and without a country code (e.g. `+6591234567` and `91234567`) is reported as
-`same phone apart from country code`. A client with several engagements is listed once, and at most three clients are named before the warning
-summarizes the rest as `and N more`. The add has already succeeded; inspect the numbered records in the warning and correct the mistaken one using `edit` or `delete`. A warning is not a duplicate rejection. For repeat engagements with the same name, phone, and email, a different event type or date is accepted without this client-identity warning.
+`same phone apart from country code`. A client with several engagements is listed once, and at most three clients are
+named before the warning summarizes the rest as `and N more`. The add has already succeeded; inspect the numbered records in the warning and correct the mistaken one using `edit` or `delete`. A warning is not a duplicate rejection. For repeat engagements with the same name, phone, and email, a different event type or date is accepted without this client-identity warning.
 
 A duplicate is rejected even if the new stage differs, and the error names the existing engagement, for example
 `Existing engagement: Avery Tan | Wedding | 2026-12-20 | Booked.` Find it and change its stage using
@@ -342,7 +342,7 @@ Phone numbers are stored without spaces or hyphens, so searching with digits onl
 from all saved engagements and replaces the previous search or sort. The heading becomes `Engagements (N)`; edit,
 advance, and delete use the displayed result indexes. Use `list` to restore every engagement.
 
-The whole search value is matched as a substring: `find n/John Tan` looks for that phrase, rather than separate matches for `John` or `Tan`. `find p/9123` can match several engagements, including repeat clients. Spaces and hyphens are removed from phone searches, so `find p/9123 4567` and `find p/9123-4567` can match a stored `91234567`. With no matches, the list is empty and feedback is `No matching engagements found.`; run `list` to restore your records.
+The whole search value is matched as a substring: `find n/John Tan` looks for that phrase, rather than separate matches for `John` or `Tan`. In name searches, curly (`’`) and straight (`'`) apostrophes match each other, so `find n/O’Connor` finds `O'Connor`. `find p/9123` can match several engagements, including repeat clients. Spaces and hyphens are removed from phone searches, so `find p/9123 4567` and `find p/9123-4567` can match a stored `91234567`. With no matches, the list is empty and feedback is `No matching engagements found.`; run `list` to restore your records.
 
 | Invalid input | Reason |
 | --- | --- |
@@ -474,7 +474,7 @@ If a previously populated list unexpectedly opens empty after manual editing, us
 | `No engagement at that index in the displayed list.` | The requested row is not in the displayed list. Check its current indexes or run `list`. |
 | A phone, email, date, or stage validation error | Follow [Field formats](#field-formats); phone and email cannot be blank. Enter the date as `YYYY-MM-DD` and stages with their documented spacing. |
 | A duplicate-engagement error | The error names the existing engagement. Find it and edit it. Changing only the stage does not create a different engagement. |
-| `Unsupported parameter: x/. This command accepts: ...` | Use only the listed prefixes for that command, each preceded by a space. |
+| `Unsupported parameter: ...` | Use only the prefixes in that command's format, each preceded by a space. For `add`, `edit` and `find`, the error also lists the accepted prefixes. |
 | `No matching engagements found.` | Try a shorter search value, use contiguous digits for phone searches, or run `list` to leave the empty search view. |
 | A save-permission or disk-space error | Follow [Saving the data](#saving-the-data). Do not assume the change was saved merely because the list updated. |
 

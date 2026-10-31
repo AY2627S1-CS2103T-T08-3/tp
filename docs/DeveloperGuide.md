@@ -146,7 +146,8 @@ Parsing works the same way as in the `delete 1` example above, so it is omitted.
 `AddCommand` first asks the `Model` whether the new engagement duplicates an existing one, and fails with a
 `CommandException` if so. Otherwise, it adds the engagement, shows all engagements so that the displayed indexes cover
 every engagement, and asks `SimilarContactWarning` for a possible-typo warning about engagements of other clients that
-share the same phone number or email. The warning, if any, is appended to the result message.
+share the same phone number (possibly with and without a country code) or email. The warning, if any, is appended to
+the result message.
 
 Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
 
@@ -292,7 +293,8 @@ email, and event type comparisons are case-insensitive.
 validate the search text as a complete field value. `PersonSearchPredicate` performs a case-insensitive substring
 comparison against the selected stored field. Consequently, `find e/alice@` is valid and can match
 `alice@example.com`. Phone values and phone search text are normalized by removing spaces and hyphens, so formatted
-searches such as `find p/9123-4567` can match a stored `91234567`.
+searches such as `find p/9123-4567` can match a stored `91234567`. Names and name search text are both passed through
+`Name#normalize`, so curly and straight apostrophes match each other.
 
 Executing `find` removes date sorting and assigns the search predicate to the model's `FilteredList`. The
 `FilteredList` invokes `PersonSearchPredicate` for the saved engagements, while the wrapping `SortedList` supplies
@@ -333,9 +335,9 @@ parsed (`ParserUtil`) or loaded from the data file (`JsonAdaptedPerson`), rather
 
 **Duplicates are rejected.** `AddCommand` calls `Model#hasPerson` before adding, and `EditCommand` rejects an edit whose
 result has the identity of a *different* engagement. The error ends with `Messages#formatExistingEngagement`, which
-names the stored engagement with that identity, so the user can find and edit it instead. `UniquePersonList` enforces the same rule as a last line of
-defence and throws `DuplicatePersonException` if a command misses it. An edit that leaves every field unchanged returns
-`No changes were made.` before either check and keeps the current view.
+names the stored engagement with that identity, so the user can find and edit it instead. `UniquePersonList` enforces
+the same rule as a last line of defence and throws `DuplicatePersonException` if a command misses it. An edit that
+leaves every field unchanged returns `No changes were made.` before either check and keeps the current view.
 
 **Similar contacts produce a warning, not an error.** After a successful add, or an edit that changes the client's name,
 phone or email, the command shows the full list and calls `SimilarContactWarning#generate(displayedPersons, target)`.
@@ -487,7 +489,8 @@ the same client repeat those three fields.
 * 1b. An engagement with the same name, normalized phone number, email address, event type, and event date already
   exists, using case-insensitive comparison for name, email, and event type. Stage is not part of duplicate identity.
 
-    * 1b1. ShutterLink informs the user that the engagement already exists and does not add it.
+    * 1b1. ShutterLink informs the user that the engagement already exists, shows the existing engagement, and does
+      not add it.
 
       Use case ends.
 

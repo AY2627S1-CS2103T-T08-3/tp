@@ -48,6 +48,12 @@ public class FindCommandParserTest {
     }
 
     @Test
+    public void parse_nameWithCurlyApostrophe_searchesStraightApostrophe() throws Exception {
+        assertParseSuccess(parser, " n/O’Connor", new FindCommand(
+                new PersonSearchPredicate(PersonSearchPredicate.Field.NAME, "O'Connor")));
+    }
+
+    @Test
     public void parse_phone_success() throws Exception {
         FindCommand expected = new FindCommand(
                 new PersonSearchPredicate(
