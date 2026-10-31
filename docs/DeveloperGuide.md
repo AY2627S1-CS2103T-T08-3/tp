@@ -90,7 +90,7 @@ class, which provides common functionality for loading and managing their corres
 
 The UI is implemented using JavaFX. Its main parts include:
 
-* `MainWindow`, which contains the main application layout.
+* `MainWindow`, which contains the main application layout and event schedule chart.
 * `CommandBox`, which accepts user commands.
 * `ResultDisplay`, which displays feedback messages.
 * `PersonListPanel`, which displays the filtered and sorted list of engagements.
@@ -106,7 +106,7 @@ The `UI` component,
 * displays command results returned by `Logic`;
 * observes the filtered and sorted engagement list exposed through `Logic`;
 * depends on selected `Model` classes when displaying engagement data;
-* updates the displayed engagements whenever the observed list changes.
+* updates the displayed engagements and event schedule chart whenever the observed list changes.
 
 ### Logic component
 
@@ -208,6 +208,19 @@ Classes used by multiple components are in the `seedu.address.commons` package.
 ## **Implementation**
 
 This section describes some noteworthy details on how certain features are implemented.
+
+### Displaying the event schedule chart
+
+`MainWindow` displays a JavaFX `PieChart` beside the feedback panel. It observes the same displayed
+`ObservableList<Person>` used by `PersonListPanel`, ensuring that its totals correspond to the engagements and indexes
+currently visible to the user. A list-change listener rebuilds three `PieChart.Data` entries and updates the custom
+legend counts after the displayed list changes.
+
+The chart compares each `EventDate.value` with the computer's current local date. Events before today are classified
+as Past, events from today through today + 6 days are Upcoming, and later events are classified as Later. The chart
+does not change the model or save data. Unlike `UpcomingCommand`, it summarizes the current view instead of replacing
+the view with an upcoming-date filter. Its date boundary is recalculated when the displayed list changes or the app is
+restarted; it does not schedule an automatic refresh at midnight.
 
 ### Viewing upcoming events
 
@@ -763,11 +776,14 @@ testers are expected to do more *exploratory* testing.
 
 1. In a disposable dataset, add engagements dated yesterday, today, today + 6 days and today + 7 days.
    Add another engagement for today, after the first one, to check insertion-order ties.
+   Run `list` and check that the chart legend shows Past (1), Upcoming (3) and Later (1).
 2. Run `upcoming`. Expect only the two engagements for today and the one for today + 6 days, in date order.
-   The two engagements for today must remain in insertion order. Check the heading's dates and count.
+   The two engagements for today must remain in insertion order. Check the heading's dates and count. The chart
+   legend should now show Past (0), Upcoming (3) and Later (0), matching the current displayed list.
 3. Run `upcoming 7`. Expect a usage error with the same displayed engagements and heading.
 4. Run `list`, search for one engagement, then run `upcoming` again. Expect all engagements in the upcoming date window,
-   regardless of the preceding search results. Run `list` again to restore the complete insertion-ordered list.
+   regardless of the preceding search results. Check that the chart counts follow each current view. Run `list` again
+   to restore the complete insertion-ordered list.
 5. With no engagements in the window, expect an empty list and feedback naming the start and end dates.
 6. For midnight behaviour, use the automated mutable-clock test rather than changing the operating system clock.
    The window stays unchanged until the next execution, then advances to the new local date.
