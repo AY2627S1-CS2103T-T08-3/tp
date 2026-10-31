@@ -50,10 +50,12 @@ public class JsonAdaptedPersonTest {
     }
 
     @Test
-    public void toModelType_nameWithTypographicApostrophe_returnsStraightApostrophe() throws Exception {
+    public void toModelType_nameWithTypographicApostrophe_keepsApostrophe() throws Exception {
+        // Loading must not merge records that a hand-edited file spells differently, which could make the file
+        // invalid as a whole; only typed names are normalized.
         JsonAdaptedPerson person = new JsonAdaptedPerson(
                 "O’Connor", VALID_PHONE, VALID_EMAIL, VALID_EVENT_TYPE, VALID_EVENT_DATE, VALID_STAGE);
-        assertEquals(new Name("O'Connor"), person.toModelType().getName());
+        assertEquals(new Name("O’Connor"), person.toModelType().getName());
     }
 
     @Test
