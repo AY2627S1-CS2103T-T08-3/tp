@@ -149,6 +149,14 @@ public class AddCommandParserTest {
                 unsupportedParameterMessage("a/"));
     }
 
+    /**
+     * Returns the expected error message when {@code prefix} is the first unsupported prefix.
+     */
+    private static String unsupportedParameterMessage(String prefix) {
+        return String.format(MESSAGE_UNSUPPORTED_PARAMETER, prefix)
+                + String.format(MESSAGE_SUPPORTED_PARAMETERS, "n/ p/ e/ t/ d/ s/");
+    }
+
     @Test
     public void parse_invalidValue_failure() {
         assertParseFailure(parser, INVALID_NAME_DESC + PHONE_DESC_BOB + EMAIL_DESC_BOB
@@ -166,13 +174,5 @@ public class AddCommandParserTest {
         assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
                         + EVENT_TYPE_DESC_BOB + EVENT_DATE_DESC_BOB,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
-    }
-
-    /**
-     * Returns the expected error message when {@code prefix} is the first unsupported prefix.
-     */
-    private static String unsupportedParameterMessage(String prefix) {
-        return String.format(MESSAGE_UNSUPPORTED_PARAMETER, prefix)
-                + String.format(MESSAGE_SUPPORTED_PARAMETERS, "n/ p/ e/ t/ d/ s/");
     }
 }

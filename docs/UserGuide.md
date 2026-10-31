@@ -54,7 +54,7 @@ The screenshots below use fictional engagements in the current interface. Your r
 | Area | What to use it for |
 | --- | --- |
 | **Command** | Type one command, then press Enter. Accepted commands clear the input; rejected commands retain the text for correction. |
-| **Feedback** | Read the command result or error. A possible-typo warning can appear after a successful add or edit. |
+| **Feedback** | Read the command result or error. A possible-typo warning can appear after a successful add or edit; the panel is then highlighted in amber. |
 | List heading | Check which view is active and how many engagements it contains. |
 | Engagement cards | Read each displayed index, client name, phone, email, event type, event date, and stage. Scroll to see additional cards. Double-click an engagement card, or select it with the keyboard and press Enter, to open its complete details. |
 | **Help** | Open the command reference using the button, `help`, or F1. |
@@ -144,7 +144,7 @@ Leading and trailing whitespace around values is ignored when commands are parse
 
 | Field | Prefix | Accepted format and stored value |
 | --- | --- | --- |
-| Name | `n/` | Letters (including accented letters such as `é`), digits, spaces, apostrophes (`'`), hyphens (`-`), periods (`.`), and slashes (`/`); the first character must be a letter or digit. For example, `O'Connor`, `Anne-Marie Tan`, and `John Tan Jr.` are accepted. Relation markers `s/o`, `d/o`, `a/l`, `a/p`, and `w/o` (in any letter case) can be used inside a name, e.g. `n/Raj s/o Kumar`. Other text such as `x/` after a space is read as a parameter, so avoid it inside names. Repeated whitespace is stored as one space, so `Amy  Lim` is stored as `Amy Lim`. |
+| Name | `n/` | Letters (including accented letters such as `é`), digits, spaces, apostrophes (`'`), hyphens (`-`), periods (`.`), and slashes (`/`); the first character must be a letter or digit. For example, `O'Connor`, `Anne-Marie Tan`, and `John Tan Jr.` are accepted. Relation markers `s/o`, `d/o`, `a/l`, `a/p`, and `w/o` (in any letter case) can be used inside a name, e.g. `n/Raj s/o Kumar`. Other text such as `x/` after a space is read as a parameter, so avoid it inside names. Repeated whitespace is stored as one space, so `Amy  Lim` is stored as `Amy Lim`. A curly apostrophe (`’`), which autocorrect often inserts, is stored as a straight apostrophe, so `O’Connor` and `O'Connor` are the same name. |
 | Phone number | `p/` | 8–15 digits, with an optional leading `+`. Spaces and hyphens are accepted but removed when the number is stored and displayed. |
 | Email | `e/` | `local-part@domain`, up to 254 characters. The local part uses alphanumeric groups separated by `+`, `_`, `.`, or `-`; those special characters cannot start or end the local part or occur consecutively. The domain has at least two dot-separated labels. Each domain label must start and end with an alphanumeric character. Hyphens are allowed inside a domain label, but they cannot occur consecutively. For example, `john@my-domain.com` is accepted, while `john@my--domain.com` is rejected. The final domain label must contain at least two characters. The address is stored in lowercase. |
 | Event type | `t/` | 1–40 letters, digits, spaces, or hyphens, with at least one letter or digit. Repeated whitespace is stored as one space. |
@@ -156,7 +156,7 @@ upcoming views can therefore change which engagement an index identifies.
 
 **Both phone and email are required.** You cannot leave either field empty when adding, or clear it with `edit 1 p/` or `edit 1 e/`. Omit a field from an edit command to retain its current value. Event dates may be in the past, so completed work can remain in your records.
 
-Phone formatting does not infer country codes: `+65 9123 4567` is stored as `+6591234567`, while `91234567` stays `91234567`. The leading `+` is retained and matters when checking duplicate phone numbers. Use a consistent format for repeat clients.
+Phone formatting does not infer country codes: `+65 9123 4567` is stored as `+6591234567`, while `91234567` stays `91234567`. The leading `+` is retained, so these two records are not duplicates of each other. However, if a different client identity uses the same number with or without a country code, ShutterLink shows a possible-typo warning. Use a consistent format for repeat clients.
 
 ### Viewing help: `help`
 
@@ -197,11 +197,19 @@ Warning: possible typo. Shares details with #1 Avery Tan (same phone and email).
 If this is a mistake, fix the wrong engagement with edit INDEX or delete INDEX.
 ```
 
+The feedback panel is highlighted in amber whenever it contains a warning, so the warning is not mistaken for an
+ordinary success message:
+
+![Feedback panel highlighted in amber, showing a possible-typo warning after an add.](images/ug-typo-warning.png)
+
 Each `#INDEX` refers to the full list shown after the command, and the text in brackets states which details are
-shared. A client with several engagements is listed once, and at most three clients are named before the warning
+shared. The same number written with and without a country code (e.g. `+6591234567` and `91234567`) is reported as
+`same phone apart from country code`. A client with several engagements is listed once, and at most three clients are named before the warning
 summarizes the rest as `and N more`. The add has already succeeded; inspect the numbered records in the warning and correct the mistaken one using `edit` or `delete`. A warning is not a duplicate rejection. For repeat engagements with the same name, phone, and email, a different event type or date is accepted without this client-identity warning.
 
-A duplicate is rejected even if the new stage differs. Change the existing engagement's stage using `edit INDEX s/STAGE` instead.
+A duplicate is rejected even if the new stage differs, and the error names the existing engagement, for example
+`Existing engagement: Avery Tan | Wedding | 2026-12-20 | Booked.` Find it and change its stage using
+`edit INDEX s/STAGE` instead.
 
 ### Listing and sorting engagements: `list`
 
@@ -464,7 +472,8 @@ If a previously populated list unexpectedly opens empty after manual editing, us
 | A usage message, missing field, or repeated-prefix error | Compare your input with the command summary. Add requires name, phone, email, event type, and event date; edit requires an index and at least one field. |
 | `No engagement at that index in the displayed list.` | The requested row is not in the displayed list. Check its current indexes or run `list`. |
 | A phone, email, date, or stage validation error | Follow [Field formats](#field-formats); phone and email cannot be blank. Enter the date as `YYYY-MM-DD` and stages with their documented spacing. |
-| A duplicate-engagement error | Find the existing event and edit it. Changing only the stage does not create a different engagement. |
+| A duplicate-engagement error | The error names the existing engagement. Find it and edit it. Changing only the stage does not create a different engagement. |
+| `Unsupported parameter: x/. This command accepts: ...` | Use only the listed prefixes for that command, each preceded by a space. |
 | `No matching engagements found.` | Try a shorter search value, use contiguous digits for phone searches, or run `list` to leave the empty search view. |
 | A save-permission or disk-space error | Follow [Saving the data](#saving-the-data). Do not assume the change was saved merely because the list updated. |
 
@@ -473,11 +482,6 @@ If a previously populated list unexpectedly opens empty after manual editing, us
 ## Known issues
 
 1. **A window can reopen off-screen after disconnecting a monitor.** Close ShutterLink, move `preferences.json` from the launch folder to a backup location, and restart. This resets window placement without deleting `data/addressbook.json`.
-
-1. **Curly and straight apostrophes are different characters in names.** Names are stored exactly as typed, so
-   `O’Connor` (curly apostrophe, often inserted by autocorrect) and `O'Connor` are treated as different clients. If
-   they share a phone number or email, ShutterLink shows a possible-typo warning; use `edit` to make the names
-   consistent.
 
 --------------------------------------------------------------------------------------------------------------------
 
