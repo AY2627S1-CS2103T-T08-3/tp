@@ -21,7 +21,7 @@ public class Messages {
             "No engagement at that index in the displayed list.";
     public static final String MESSAGE_PERSONS_LISTED_OVERVIEW = "%1$d engagement(s) listed!";
     public static final String MESSAGE_UNSUPPORTED_PARAMETER = "Unsupported parameter: %1$s.";
-    public static final String MESSAGE_SUPPORTED_PARAMETERS = " This command accepts: %1$s";
+    public static final String MESSAGE_SUPPORTED_PARAMETERS = "This command accepts: %1$s";
     public static final String MESSAGE_MISSING_PARAMETER = "Missing required parameter: %1$s.";
     public static final String MESSAGE_DUPLICATE_FIELDS =
                 "Multiple values specified for the following single-valued field(s): ";

@@ -49,7 +49,7 @@ public class ParserUtilTest {
 
     @Test
     public void verifyNoUnsupportedPrefixes_unsupportedPrefix_throwsParseException() {
-        String unsupportedX = String.format(Messages.MESSAGE_UNSUPPORTED_PARAMETER, "x/")
+        String unsupportedX = String.format(Messages.MESSAGE_UNSUPPORTED_PARAMETER, "x/") + " "
                 + String.format(Messages.MESSAGE_SUPPORTED_PARAMETERS, "n/");
         assertThrows(ParseException.class, unsupportedX, ()
             -> ParserUtil.verifyNoUnsupportedPrefixes(" n/John x/oops", PREFIX_NAME));
@@ -58,7 +58,7 @@ public class ParserUtilTest {
         assertThrows(ParseException.class, unsupportedX, ()
             -> ParserUtil.verifyNoUnsupportedPrefixes(" n/John\tx/oops", PREFIX_NAME));
         // text that only starts like a marker is still a prefix
-        String unsupportedS = String.format(Messages.MESSAGE_UNSUPPORTED_PARAMETER, "s/")
+        String unsupportedS = String.format(Messages.MESSAGE_UNSUPPORTED_PARAMETER, "s/") + " "
                 + String.format(Messages.MESSAGE_SUPPORTED_PARAMETERS, "n/");
         assertThrows(ParseException.class, unsupportedS, ()
             -> ParserUtil.verifyNoUnsupportedPrefixes(" n/Raj s/ok", PREFIX_NAME));
