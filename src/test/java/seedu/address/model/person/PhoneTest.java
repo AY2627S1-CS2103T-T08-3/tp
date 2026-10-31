@@ -77,4 +77,30 @@ public class PhoneTest {
         // different values -> returns false
         assertFalse(phone.equals(new Phone("99999995")));
     }
+
+    @Test
+    public void isSameNumberIgnoringCountryCode() {
+        Phone local = new Phone("91234567");
+        Phone international = new Phone("+65 9123 4567");
+
+        // same number with and without a country code, in either order -> returns true
+        assertTrue(international.isSameNumberIgnoringCountryCode(local));
+        assertTrue(local.isSameNumberIgnoringCountryCode(international));
+
+        // identical numbers are compared with equals instead -> returns false
+        assertFalse(local.isSameNumberIgnoringCountryCode(new Phone("91234567")));
+        assertFalse(international.isSameNumberIgnoringCountryCode(new Phone("+6591234567")));
+
+        // different local number -> returns false
+        assertFalse(international.isSameNumberIgnoringCountryCode(new Phone("91234568")));
+
+        // local number does not end the international number -> returns false
+        assertFalse(new Phone("+6591234567").isSameNumberIgnoringCountryCode(new Phone("65912345")));
+
+        // "+" alone, without a country-code digit, is not a country code -> returns false
+        assertFalse(new Phone("+91234567").isSameNumberIgnoringCountryCode(local));
+
+        // null -> throws NullPointerException
+        assertThrows(NullPointerException.class, () -> local.isSameNumberIgnoringCountryCode(null));
+    }
 }

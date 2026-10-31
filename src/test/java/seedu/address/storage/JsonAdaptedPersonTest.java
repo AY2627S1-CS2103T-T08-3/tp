@@ -50,6 +50,13 @@ public class JsonAdaptedPersonTest {
     }
 
     @Test
+    public void toModelType_nameWithTypographicApostrophe_returnsStraightApostrophe() throws Exception {
+        JsonAdaptedPerson person = new JsonAdaptedPerson(
+                "O’Connor", VALID_PHONE, VALID_EMAIL, VALID_EVENT_TYPE, VALID_EVENT_DATE, VALID_STAGE);
+        assertEquals(new Name("O'Connor"), person.toModelType().getName());
+    }
+
+    @Test
     public void toModelType_nullName_throwsIllegalValueException() {
         JsonAdaptedPerson person = new JsonAdaptedPerson(
                 null, VALID_PHONE, VALID_EMAIL, VALID_EVENT_TYPE, VALID_EVENT_DATE, VALID_STAGE);

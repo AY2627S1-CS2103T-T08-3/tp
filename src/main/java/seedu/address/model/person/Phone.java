@@ -51,6 +51,23 @@ public class Phone {
         return phone.replaceAll("[ -]", "");
     }
 
+    /**
+     * Returns true if this phone and {@code other} are the same number written with and without a country code,
+     * e.g. {@code +6591234567} and {@code 91234567}.
+     */
+    public boolean isSameNumberIgnoringCountryCode(Phone other) {
+        requireNonNull(other);
+        boolean hasCountryCode = value.startsWith("+");
+        if (hasCountryCode == other.value.startsWith("+")) {
+            return false;
+        }
+        String numberWithCode = hasCountryCode ? value : other.value;
+        String numberWithoutCode = hasCountryCode ? other.value : value;
+        // The "+" and at least one country-code digit must precede the local number.
+        return numberWithCode.length() > numberWithoutCode.length() + 1
+                && numberWithCode.endsWith(numberWithoutCode);
+    }
+
     @Override
     public String toString() {
         return value;

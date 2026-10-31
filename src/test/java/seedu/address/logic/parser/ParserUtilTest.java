@@ -49,14 +49,18 @@ public class ParserUtilTest {
 
     @Test
     public void verifyNoUnsupportedPrefixes_unsupportedPrefix_throwsParseException() {
-        assertThrows(ParseException.class, String.format(Messages.MESSAGE_UNSUPPORTED_PARAMETER, "x/"), ()
+        String unsupportedX = String.format(Messages.MESSAGE_UNSUPPORTED_PARAMETER, "x/")
+                + String.format(Messages.MESSAGE_SUPPORTED_PARAMETERS, "n/");
+        assertThrows(ParseException.class, unsupportedX, ()
             -> ParserUtil.verifyNoUnsupportedPrefixes(" n/John x/oops", PREFIX_NAME));
-        assertThrows(ParseException.class, String.format(Messages.MESSAGE_UNSUPPORTED_PARAMETER, "x/"), ()
+        assertThrows(ParseException.class, unsupportedX, ()
             -> ParserUtil.verifyNoUnsupportedPrefixes("x/oops", PREFIX_NAME));
-        assertThrows(ParseException.class, String.format(Messages.MESSAGE_UNSUPPORTED_PARAMETER, "x/"), ()
+        assertThrows(ParseException.class, unsupportedX, ()
             -> ParserUtil.verifyNoUnsupportedPrefixes(" n/John\tx/oops", PREFIX_NAME));
         // text that only starts like a marker is still a prefix
-        assertThrows(ParseException.class, String.format(Messages.MESSAGE_UNSUPPORTED_PARAMETER, "s/"), ()
+        String unsupportedS = String.format(Messages.MESSAGE_UNSUPPORTED_PARAMETER, "s/")
+                + String.format(Messages.MESSAGE_SUPPORTED_PARAMETERS, "n/");
+        assertThrows(ParseException.class, unsupportedS, ()
             -> ParserUtil.verifyNoUnsupportedPrefixes(" n/Raj s/ok", PREFIX_NAME));
     }
 
@@ -99,6 +103,7 @@ public class ParserUtilTest {
         assertEquals(expected, ParserUtil.parseName(VALID_NAME));
         assertEquals(expected, ParserUtil.parseName(WHITESPACE + VALID_NAME + WHITESPACE));
         assertEquals(new Name("Amy Lim"), ParserUtil.parseName("Amy  \t Lim"));
+        assertEquals(new Name("O'Connor"), ParserUtil.parseName("O’Connor"));
     }
 
     @Test

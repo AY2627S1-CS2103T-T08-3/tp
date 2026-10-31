@@ -75,12 +75,13 @@ public class Person {
     }
 
     /**
-     * Returns true if both persons share a phone number or email, but are not the same client
-     * (i.e., their names, phones and emails are not all the same). Such records may contain a typo.
+     * Returns true if both persons share a phone number (possibly written with and without a country code) or
+     * an email, but are not the same client (i.e., their names, phones and emails are not all the same).
+     * Such records may contain a typo.
      */
     public boolean hasSimilarContactDetails(Person otherPerson) {
         requireNonNull(otherPerson);
-        boolean hasSharedContact = hasSamePhone(otherPerson) || hasSameEmail(otherPerson);
+        boolean hasSharedContact = hasMatchingPhone(otherPerson) || hasSameEmail(otherPerson);
         return hasSharedContact && !isSameClient(otherPerson);
     }
 
@@ -89,6 +90,14 @@ public class Person {
      */
     public boolean hasSamePhone(Person otherPerson) {
         return phone.equals(otherPerson.phone);
+    }
+
+    /**
+     * Returns true if both persons have the same phone number, or the same number written with and without a
+     * country code.
+     */
+    public boolean hasMatchingPhone(Person otherPerson) {
+        return hasSamePhone(otherPerson) || phone.isSameNumberIgnoringCountryCode(otherPerson.phone);
     }
 
     /**

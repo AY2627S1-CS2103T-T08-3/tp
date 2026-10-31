@@ -184,4 +184,26 @@ public class PersonTest {
                 + "}";
         assertEquals(expected, ALICE.toString());
     }
+
+    @Test
+    public void hasMatchingPhone() {
+        Person aliceWithCountryCode = new PersonBuilder(ALICE).withPhone("+65" + ALICE.getPhone().value).build();
+
+        assertTrue(ALICE.hasMatchingPhone(ALICE));
+        assertTrue(ALICE.hasMatchingPhone(aliceWithCountryCode));
+        assertTrue(aliceWithCountryCode.hasMatchingPhone(ALICE));
+        assertFalse(ALICE.hasMatchingPhone(BOB));
+    }
+
+    @Test
+    public void hasSimilarContactDetails_sameNumberWithCountryCode_returnsTrue() {
+        // same name and number, but only one has a country code and the emails differ
+        Person otherAlice = new PersonBuilder(ALICE).withPhone("+65" + ALICE.getPhone().value)
+                .withEmail(VALID_EMAIL_BOB).build();
+        assertTrue(ALICE.hasSimilarContactDetails(otherAlice));
+
+        // different person sharing the number written with a country code
+        Person bobWithAlicePhone = new PersonBuilder(BOB).withPhone("+65" + ALICE.getPhone().value).build();
+        assertTrue(ALICE.hasSimilarContactDetails(bobWithAlicePhone));
+    }
 }

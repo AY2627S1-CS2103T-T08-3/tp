@@ -3,6 +3,8 @@ package seedu.address.model.person;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
 
+import seedu.address.commons.util.StringUtil;
+
 /**
  * Represents a Person's name in the address book.
  * Guarantees: immutable; is valid as declared in {@link #isValidName(String)}
@@ -21,6 +23,9 @@ public class Name {
      */
     public static final String VALIDATION_REGEX = "[\\p{L}\\p{N}][\\p{L}\\p{M}\\p{N} '’./\\-]*";
 
+    /** Typographic apostrophe, which autocorrect often inserts in place of a straight apostrophe. */
+    private static final char TYPOGRAPHIC_APOSTROPHE = '’';
+
     public final String fullName;
 
     /**
@@ -32,6 +37,16 @@ public class Name {
         requireNonNull(name);
         checkArgument(isValidName(name), MESSAGE_CONSTRAINTS);
         fullName = name;
+    }
+
+    /**
+     * Returns {@code name} with surrounding whitespace removed, runs of spaces or tabs collapsed into one space,
+     * and typographic apostrophes replaced by straight ones, so that the same name typed differently is stored
+     * identically.
+     */
+    public static String normalize(String name) {
+        requireNonNull(name);
+        return StringUtil.normalizeWhitespace(name).replace(TYPOGRAPHIC_APOSTROPHE, '\'');
     }
 
     /**

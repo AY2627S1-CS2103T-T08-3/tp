@@ -48,6 +48,20 @@ public class SimilarContactWarningTest {
     }
 
     @Test
+    public void generate_sameNumberWithCountryCode_listsCountryCodeDifference() {
+        String aliceInternationalPhone = "+65" + ALICE_PHONE;
+        Person phoneWithCode = new PersonBuilder(BENSON).withPhone(aliceInternationalPhone).build();
+        Person phoneWithCodeAndEmail = new PersonBuilder(ALICE).withName(VALID_NAME_BOB)
+                .withPhone(aliceInternationalPhone).build();
+        List<Person> displayedPersons = List.of(ALICE, phoneWithCode, phoneWithCodeAndEmail);
+
+        String expectedContacts = "#2 " + BENSON.getName() + " (same phone apart from country code), "
+                + "#3 " + VALID_NAME_BOB + " (same email, same phone apart from country code)";
+        assertEquals(String.format(SimilarContactWarning.MESSAGE_WARNING, expectedContacts),
+                SimilarContactWarning.generate(displayedPersons, ALICE));
+    }
+
+    @Test
     public void generate_clientWithSeveralRecords_listedOnce() {
         Person aliceWedding = new PersonBuilder(ALICE).withEventType("Wedding")
                 .withEventDate("2026-12-20").build();

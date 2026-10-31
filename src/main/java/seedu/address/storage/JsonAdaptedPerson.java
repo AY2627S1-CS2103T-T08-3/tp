@@ -70,7 +70,7 @@ class JsonAdaptedPerson {
         if (name == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName()));
         }
-        final String normalizedName = StringUtil.normalizeWhitespace(name);
+        final String normalizedName = Name.normalize(name);
         if (!Name.isValidName(normalizedName)) {
             throw new IllegalValueException(Name.MESSAGE_CONSTRAINTS);
         }
