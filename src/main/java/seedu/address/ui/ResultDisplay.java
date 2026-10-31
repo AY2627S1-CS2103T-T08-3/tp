@@ -14,6 +14,7 @@ public class ResultDisplay extends UiPart<Region> {
 
     private static final String FXML = "ResultDisplay.fxml";
     private static final String WARNING_STYLE_CLASS = "warning";
+    private static final String ERROR_STYLE_CLASS = "feedback-error";
 
     @FXML
     private TextArea resultDisplay;
@@ -27,11 +28,28 @@ public class ResultDisplay extends UiPart<Region> {
      */
     public void setFeedbackToUser(String feedbackToUser) {
         requireNonNull(feedbackToUser);
-        resultDisplay.setText(feedbackToUser);
-        resultDisplay.getStyleClass().remove(WARNING_STYLE_CLASS);
         if (Messages.hasWarning(feedbackToUser)) {
-            resultDisplay.getStyleClass().add(WARNING_STYLE_CLASS);
+            showFeedback(feedbackToUser, WARNING_STYLE_CLASS);
+        } else {
+            showFeedback(feedbackToUser);
         }
+    }
+
+    /**
+     * Displays {@code errorMessage} highlighted as an error.
+     */
+    public void setErrorToUser(String errorMessage) {
+        showFeedback(requireNonNull(errorMessage), ERROR_STYLE_CLASS);
+    }
+
+    private void showFeedback(String text) {
+        resultDisplay.setText(text);
+        resultDisplay.getStyleClass().removeAll(WARNING_STYLE_CLASS, ERROR_STYLE_CLASS);
+    }
+
+    private void showFeedback(String text, String highlightStyleClass) {
+        showFeedback(text);
+        resultDisplay.getStyleClass().add(highlightStyleClass);
     }
 
 }

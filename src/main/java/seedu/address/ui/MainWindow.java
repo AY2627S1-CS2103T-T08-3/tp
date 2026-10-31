@@ -177,7 +177,7 @@ public class MainWindow extends UiPart<Stage> {
 
             return commandResult;
         } catch (CommandException | ParseException e) {
-            resultDisplay.setFeedbackToUser(e.getMessage());
+            resultDisplay.setErrorToUser(e.getMessage());
             throw e;
         }
     }

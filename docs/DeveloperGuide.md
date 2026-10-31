@@ -108,6 +108,13 @@ The `UI` component,
 * depends on selected `Model` classes when displaying engagement data;
 * updates the displayed engagements whenever the observed list changes.
 
+`ResultDisplay` colours its feedback by outcome: results are green, results containing a warning are amber (see
+[Detecting duplicate engagements and possible typos](#detecting-duplicate-engagements-and-possible-typos)), and
+errors are red. `MainWindow` passes command errors to `ResultDisplay#setErrorToUser`, which adds a `feedback-error`
+style class using the same `-error-colour` as the command field's error border. Each message replaces the previous
+highlight. The class is not named `error` because the global `.error` rule in `Extensions.css` sets an `!important`
+text colour that would override it.
+
 ### Logic component
 
 **API**:
