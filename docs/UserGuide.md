@@ -204,8 +204,8 @@ ordinary success message:
 ![Feedback panel highlighted in amber, showing a possible-typo warning after an add.](images/ug-typo-warning.png)
 
 Each `#INDEX` refers to the full list shown after the command, and the text in brackets states which details are
-shared. The same number written with and without a country code (e.g. `+6591234567` and `91234567`) is reported as
-`same phone apart from country code`. A client with several engagements is listed once, and at most three clients are
+shared. The same number written with and without a country code of 1–3 digits (e.g. `+6591234567` and `91234567`)
+is reported as `same phone apart from country code`. If a long warning does not fit, scroll the feedback panel. A client with several engagements is listed once, and at most three clients are
 named before the warning summarizes the rest as `and N more`. The add has already succeeded; inspect the numbered records in the warning and correct the mistaken one using `edit` or `delete`. A warning is not a duplicate rejection. For repeat engagements with the same name, phone, and email, a different event type or date is accepted without this client-identity warning.
 
 A duplicate is rejected even if the new stage differs, and the error names the existing engagement, for example
