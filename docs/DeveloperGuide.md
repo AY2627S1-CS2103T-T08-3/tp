@@ -331,7 +331,9 @@ parsed (`ParserUtil`) or loaded from the data file (`JsonAdaptedPerson`), rather
   into one space by `StringUtil#normalizeWhitespace`. For typed names, `Name#normalize` also replaces typographic
   apostrophes (`’`, often inserted by autocorrect) with straight ones. Loading the data file does not, because a
   hand-edited file that spells one engagement both ways would otherwise contain a duplicate and fail to load as a
-  whole.
+  whole. The trade-off is that a name stored with a curly apostrophe (only possible through the data file) and the
+  same name typed in a command are different clients, so re-adding that engagement produces a possible-typo warning
+  instead of a duplicate error.
 
 **Duplicates are rejected.** `AddCommand` calls `Model#hasPerson` before adding, and `EditCommand` rejects an edit whose
 result has the identity of a *different* engagement. The error ends with `Messages#formatExistingEngagement`, which
