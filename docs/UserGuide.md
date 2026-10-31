@@ -53,7 +53,7 @@ The screenshots below use fictional engagements in the current interface. Your r
 
 | Area | What to use it for |
 | --- | --- |
-| **Command** | Type one command, then press Enter. Accepted commands clear the input; rejected commands retain the text for correction. |
+| **Command** | Type one command, then press Enter. Accepted commands clear the input; rejected commands retain the text for correction. Press Ctrl+L (Command+L on macOS) from the main window to focus this input without clearing unfinished text. |
 | **Feedback** | Read the command result or error. A possible-typo warning can appear after a successful add or edit. |
 | List heading | Check which view is active and how many engagements it contains. |
 | Engagement cards | Read each displayed index, client name, phone, email, event type, event date, and stage. Scroll to see additional cards. Double-click an engagement card, or select it with the keyboard and press Enter, to open its complete details. |
