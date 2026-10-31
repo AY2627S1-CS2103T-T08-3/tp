@@ -1,6 +1,7 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.Messages.MESSAGE_SUPPORTED_PARAMETERS;
 import static seedu.address.logic.Messages.MESSAGE_UNSUPPORTED_PARAMETER;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
@@ -18,11 +19,11 @@ public class FindCommandParserTest {
 
     @Test
     public void parse_unsupportedPrefix_throwsParseException() {
-        assertParseFailure(parser, " n/Alice s/Booked", String.format(MESSAGE_UNSUPPORTED_PARAMETER, "s/"));
-        assertParseFailure(parser, " n/Alice d/2026-12-20", String.format(MESSAGE_UNSUPPORTED_PARAMETER, "d/"));
-        assertParseFailure(parser, " n/Alice x/oops", String.format(MESSAGE_UNSUPPORTED_PARAMETER, "x/"));
-        assertParseFailure(parser, " x/oops n/Alice", String.format(MESSAGE_UNSUPPORTED_PARAMETER, "x/"));
-        assertParseFailure(parser, " n/Alice\tx/oops", String.format(MESSAGE_UNSUPPORTED_PARAMETER, "x/"));
+        assertParseFailure(parser, " n/Alice s/Booked", unsupportedParameterMessage("s/"));
+        assertParseFailure(parser, " n/Alice d/2026-12-20", unsupportedParameterMessage("d/"));
+        assertParseFailure(parser, " n/Alice x/oops", unsupportedParameterMessage("x/"));
+        assertParseFailure(parser, " x/oops n/Alice", unsupportedParameterMessage("x/"));
+        assertParseFailure(parser, " n/Alice\tx/oops", unsupportedParameterMessage("x/"));
     }
 
     @Test
@@ -98,4 +99,11 @@ public class FindCommandParserTest {
         assertParseFailure(parser, "Alice", INVALID_FORMAT);
     }
 
+    /**
+     * Returns the expected error message when {@code prefix} is the first unsupported prefix.
+     */
+    private static String unsupportedParameterMessage(String prefix) {
+        return String.format(MESSAGE_UNSUPPORTED_PARAMETER, prefix) + " "
+                + String.format(MESSAGE_SUPPORTED_PARAMETERS, "n/ p/ e/ t/");
+    }
 }

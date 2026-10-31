@@ -54,7 +54,7 @@ The screenshots below use fictional engagements in the current interface. Your r
 | Area | What to use it for |
 | --- | --- |
 | **Command** | Type one command, then press Enter. Accepted commands clear the input; rejected commands retain the text for correction. |
-| **Feedback** | Read the command result or error. A possible-typo warning can appear after a successful add or edit. |
+| **Feedback** | Read the command result or error. A possible-typo warning can appear after a successful add or edit; the panel is then highlighted in amber. |
 | List heading | Check which view is active and how many engagements it contains. |
 | Engagement cards | Read each displayed index, client name, phone, email, event type, event date, and stage. Scroll to see additional cards. Double-click an engagement card, or select it with the keyboard and press Enter, to open its complete details. |
 | **Help** | Open the command reference using the button, `help`, or F1. |
@@ -198,11 +198,21 @@ Warning: possible typo. Shares details with #1 Avery Tan (same phone and email).
 If this is a mistake, fix the wrong engagement with edit INDEX or delete INDEX.
 ```
 
-Each `#INDEX` refers to the full list shown after the command, and the text in brackets states which details are
-shared. A client with several engagements is listed once, and at most three clients are named before the warning
-summarizes the rest as `and N more`. The add has already succeeded; inspect the numbered records in the warning and correct the mistaken one using `edit` or `delete`. A warning is not a duplicate rejection. For repeat engagements with the same name, phone, and email, a different event type or date is accepted without this client-identity warning.
+The feedback panel is highlighted in amber whenever it contains a warning, so the warning is not mistaken for an
+ordinary success message:
 
-A duplicate is rejected even if the new stage differs. Change the existing engagement's stage using `edit INDEX s/STAGE` instead.
+![Feedback panel highlighted in amber, showing a possible-typo warning after an add.](images/ug-typo-warning.png)
+
+Each `#INDEX` refers to the full list shown after the command, and the text in brackets states which details are
+shared. If a long warning does not fit, scroll the feedback panel. A client with several engagements is listed once,
+and at most three clients are named before the warning summarizes the rest as `and N more`. The add has already
+succeeded; inspect the numbered records in the warning and correct the mistaken one using `edit` or `delete`. A
+warning is not a duplicate rejection. For repeat engagements with the same name, phone, and email, a different event
+type or date is accepted without this client-identity warning.
+
+A duplicate is rejected even if the new stage differs, and the error names the existing engagement, for example
+`Existing engagement: Avery Tan | Wedding | 2026-12-20 | Booked.` Find it and change its stage using
+`edit INDEX s/STAGE` instead.
 
 ### Listing and sorting engagements: `list`
 
@@ -465,7 +475,8 @@ If a previously populated list unexpectedly opens empty after manual editing, us
 | A usage message, missing field, or repeated-prefix error | Compare your input with the command summary. Add requires name, phone, email, event type, and event date; edit requires an index and at least one field. |
 | `No engagement at that index in the displayed list.` | The requested row is not in the displayed list. Check its current indexes or run `list`. |
 | A phone, email, date, or stage validation error | Follow [Field formats](#field-formats); phone and email cannot be blank. Enter the date as `YYYY-MM-DD` and stages with their documented spacing. |
-| A duplicate-engagement error | Find the existing event and edit it. Changing only the stage does not create a different engagement. |
+| A duplicate-engagement error | The error names the existing engagement. Find it and edit it. Changing only the stage does not create a different engagement. |
+| `Unsupported parameter: ...` | Use only the prefixes in that command's format, each preceded by a space. For `add`, `edit` and `find`, the error also lists the accepted prefixes. |
 | `No matching engagements found.` | Try a shorter search value, use contiguous digits for phone searches, or run `list` to leave the empty search view. |
 | A save-permission or disk-space error | Follow [Saving the data](#saving-the-data). Do not assume the change was saved merely because the list updated. |
 

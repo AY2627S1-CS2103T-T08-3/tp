@@ -535,6 +535,13 @@
     -fx-text-fill: #a7f3d0;
 }
 
+/* Feedback containing a warning, such as a possible typo after add or edit. */
+.result-display.warning {
+    -fx-text-fill: #fcd34d;
+    -fx-border-color: #f59e0b;
+    -fx-border-width: 0 0 0 4;
+}
+
 #resultDisplay .content {
     -fx-background-color: transparent, #0f172a, transparent, #0f172a;
 }
