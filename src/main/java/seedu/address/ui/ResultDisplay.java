@@ -28,7 +28,11 @@ public class ResultDisplay extends UiPart<Region> {
      */
     public void setFeedbackToUser(String feedbackToUser) {
         requireNonNull(feedbackToUser);
-        showFeedback(feedbackToUser, Messages.hasWarning(feedbackToUser) ? WARNING_STYLE_CLASS : "");
+        if (Messages.hasWarning(feedbackToUser)) {
+            showFeedback(feedbackToUser, WARNING_STYLE_CLASS);
+        } else {
+            showFeedback(feedbackToUser);
+        }
     }
 
     /**
@@ -38,12 +42,14 @@ public class ResultDisplay extends UiPart<Region> {
         showFeedback(requireNonNull(errorMessage), ERROR_STYLE_CLASS);
     }
 
-    private void showFeedback(String text, String styleClass) {
+    private void showFeedback(String text) {
         resultDisplay.setText(text);
         resultDisplay.getStyleClass().removeAll(WARNING_STYLE_CLASS, ERROR_STYLE_CLASS);
-        if (!styleClass.isEmpty()) {
-            resultDisplay.getStyleClass().add(styleClass);
-        }
+    }
+
+    private void showFeedback(String text, String highlightStyleClass) {
+        showFeedback(text);
+        resultDisplay.getStyleClass().add(highlightStyleClass);
     }
 
 }

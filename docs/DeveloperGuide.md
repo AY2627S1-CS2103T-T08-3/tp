@@ -108,6 +108,13 @@ The `UI` component,
 * depends on selected `Model` classes when displaying engagement data;
 * updates the displayed engagements whenever the observed list changes.
 
+`ResultDisplay` colours its feedback by outcome: results are green, results containing a warning are amber (see
+[Detecting duplicate engagements and possible typos](#detecting-duplicate-engagements-and-possible-typos)), and
+errors are red. `MainWindow` passes command errors to `ResultDisplay#setErrorToUser`, which adds a `feedback-error`
+style class using the same `-error-colour` as the command field's error border. Each message replaces the previous
+highlight. The class is not named `error` because the global `.error` rule in `Extensions.css` sets an `!important`
+text colour that would override it.
+
 ### Logic component
 
 **API**:
@@ -348,9 +355,6 @@ The activity diagram below summarizes how the warning is built.
   record is likely mistyped.
 * `ResultDisplay` adds a `warning` style class whenever `Messages#hasWarning` finds a line starting with `Warning: `,
   so the feedback is highlighted in amber and the warning is not mistaken for an ordinary success message.
-  `MainWindow` shows command errors through `ResultDisplay#setErrorToUser`, which uses a `feedback-error` style class
-  (red, matching the command field's error border). Each message replaces the previous highlight. The name avoids
-  the global `.error` rule in `Extensions.css`, whose `!important` text colour would otherwise apply.
 * An edit that changes only the event, the stage or the capitalization of the name does not warn again, because the
   client details are unchanged.
 
