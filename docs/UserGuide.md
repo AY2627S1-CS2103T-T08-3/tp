@@ -76,7 +76,8 @@ widen the main window and use the horizontal scrollbar where available. The over
 to show all six columns.
 
 Saved window positions are restored when enough of the title bar is on an available screen. Otherwise,
-ShutterLink centers the window, for example after a monitor is disconnected. The saved size is unchanged.
+ShutterLink centers the window on the primary screen and moves its title bar inside that screen's work area,
+even when the saved window is larger than the screen. The saved size is unchanged.
 
 ### Try a client workflow
 

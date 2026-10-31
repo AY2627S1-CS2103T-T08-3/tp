@@ -772,7 +772,8 @@ testers are expected to do more *exploratory* testing.
 
    1. Relaunch the app by running `java -jar shutterlink.jar` again.<br>
        Expected: The most recent window size and location are retained.
-       If a saved monitor has been disconnected, expect the window to be centered on an available screen instead.
+       If a saved monitor has been disconnected, expect the fallback position to keep the title bar on the primary
+       screen, even when the saved window is larger than that screen. The saved size is unchanged.
 
 ### Viewing upcoming events
 
