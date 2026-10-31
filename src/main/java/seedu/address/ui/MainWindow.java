@@ -7,11 +7,13 @@ import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.logic.Logic;
@@ -155,9 +157,13 @@ public class MainWindow extends UiPart<Stage> {
     private void setWindowDefaultSize(GuiSettings guiSettings) {
         primaryStage.setHeight(guiSettings.getWindowHeight());
         primaryStage.setWidth(guiSettings.getWindowWidth());
-        if (guiSettings.getWindowCoordinates() != null) {
+        if (guiSettings.hasVisibleWindowTitle(Screen.getScreens().stream().map(Screen::getVisualBounds).toList())) {
             primaryStage.setX(guiSettings.getWindowCoordinates().getX());
             primaryStage.setY(guiSettings.getWindowCoordinates().getY());
+        } else {
+            Point2D fallback = guiSettings.getFallbackWindowPosition(Screen.getPrimary().getVisualBounds());
+            primaryStage.setX(fallback.getX());
+            primaryStage.setY(fallback.getY());
         }
     }
 
