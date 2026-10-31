@@ -111,6 +111,13 @@ The `UI` component,
 `MainWindow` rebuilds the chart's Past, Upcoming (today through today + 6 days), and Later slices when the displayed
 `ObservableList<Person>` changes. The chart summarizes the current view and does not modify or save model data.
 
+`ResultDisplay` colours its feedback by outcome: results are green, results containing a warning are amber (see
+[Detecting duplicate engagements and possible typos](#detecting-duplicate-engagements-and-possible-typos)), and
+errors are red. `MainWindow` passes command errors to `ResultDisplay#setErrorToUser`, which adds a `feedback-error`
+style class using the same `-error-colour` as the command field's error border. Each message replaces the previous
+highlight. The class is not named `error` because the global `.error` rule in `Extensions.css` sets an `!important`
+text colour that would override it.
+
 ### Logic component
 
 **API**:
@@ -330,8 +337,9 @@ parsed (`ParserUtil`) or loaded from the data file (`JsonAdaptedPerson`), rather
   into one space by `StringUtil#normalizeWhitespace`.
 
 **Duplicates are rejected.** `AddCommand` calls `Model#hasPerson` before adding, and `EditCommand` rejects an edit whose
-result has the identity of a *different* engagement. `UniquePersonList` enforces the same rule as a last line of
-defence and throws `DuplicatePersonException` if a command misses it. An edit that leaves every field unchanged returns
+result has the identity of a *different* engagement. The error ends with `Messages#formatExistingEngagement`, which
+names the stored engagement with that identity, so the user can find and edit it instead. `UniquePersonList` enforces
+the same rule as a last line of defence and throws `DuplicatePersonException` if a command misses it. An edit that leaves every field unchanged returns
 `No changes were made.` before either check and keeps the current view.
 
 **Similar contacts produce a warning, not an error.** After a successful add, or an edit that changes the client's name,
@@ -348,6 +356,8 @@ The activity diagram below summarizes how the warning is built.
   short enough for the result display.
 * Each entry states what is shared (`same phone`, `same email` or `same phone and email`), so the user can tell which
   record is likely mistyped.
+* `ResultDisplay` adds a `warning` style class whenever `Messages#hasWarning` finds a line starting with `Warning: `,
+  so the feedback is highlighted in amber and the warning is not mistaken for an ordinary success message.
 * An edit that changes only the event, the stage or the capitalization of the name does not warn again, because the
   client details are unchanged.
 
@@ -482,7 +492,8 @@ the same client repeat those three fields.
 * 1b. An engagement with the same name, normalized phone number, email address, event type, and event date already
   exists, using case-insensitive comparison for name, email, and event type. Stage is not part of duplicate identity.
 
-    * 1b1. ShutterLink informs the user that the engagement already exists and does not add it.
+    * 1b1. ShutterLink informs the user that the engagement already exists, shows the existing engagement, and does
+      not add it.
 
       Use case ends.
 
@@ -836,10 +847,12 @@ testers are expected to do more *exploratory* testing.
 1. In an empty disposable dataset, add an engagement for Alice Tan.
 2. Try adding another engagement with the same name, normalized phone number, email address, event type, and event date,
    but a different stage.<br>
-   Expected: The command is rejected as a duplicate because stage is not part of engagement identity.
+   Expected: The command is rejected as a duplicate because stage is not part of engagement identity. The error
+   names Alice's existing engagement, including its stage.
 3. Add an engagement for Bob Lim that has a different email, event type, and event date but the same phone number as
    Alice.<br>
-   Expected: The engagement is added and the feedback warns that it shares Alice's phone number.
+   Expected: The engagement is added, the feedback warns that it shares Alice's phone number, and the feedback panel
+   is highlighted in amber. The next command's feedback is no longer highlighted.
 4. Add an engagement for Carol Lee with distinct details, then edit Carol's email to Alice's email.<br>
    Expected: The edit succeeds and the feedback warns that Carol now shares Alice's email address.
 5. Add an engagement with the name `Raj s/o Kumar`, then run `find n/Raj s/o`.<br>
