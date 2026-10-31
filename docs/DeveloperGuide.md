@@ -146,8 +146,7 @@ Parsing works the same way as in the `delete 1` example above, so it is omitted.
 `AddCommand` first asks the `Model` whether the new engagement duplicates an existing one, and fails with a
 `CommandException` if so. Otherwise, it adds the engagement, shows all engagements so that the displayed indexes cover
 every engagement, and asks `SimilarContactWarning` for a possible-typo warning about engagements of other clients that
-share the same phone number (possibly with and without a country code) or email. The warning, if any, is appended to
-the result message.
+share the same phone number or email. The warning, if any, is appended to the result message.
 
 Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
 
@@ -293,8 +292,7 @@ email, and event type comparisons are case-insensitive.
 validate the search text as a complete field value. `PersonSearchPredicate` performs a case-insensitive substring
 comparison against the selected stored field. Consequently, `find e/alice@` is valid and can match
 `alice@example.com`. Phone values and phone search text are normalized by removing spaces and hyphens, so formatted
-searches such as `find p/9123-4567` can match a stored `91234567`. Names and name search text are both passed through
-`Name#normalize`, so curly and straight apostrophes match each other.
+searches such as `find p/9123-4567` can match a stored `91234567`.
 
 Executing `find` removes date sorting and assigns the search predicate to the model's `FilteredList`. The
 `FilteredList` invokes `PersonSearchPredicate` for the saved engagements, while the wrapping `SortedList` supplies
@@ -315,7 +313,7 @@ therefore distinguishes three levels of "sameness" between two `Person` objects,
 | --- | --- | --- |
 | `isSameClient` | name (ignoring case), phone, email | Deciding whether two engagements belong to the same client |
 | `isSameEngagement` | client identity, event type (ignoring case), event date | Rejecting duplicate engagements in `UniquePersonList` |
-| `hasSimilarContactDetails` | phone (possibly with and without a country code) or email shared, but not the same client | Producing a possible-typo warning |
+| `hasSimilarContactDetails` | phone or email shared, but not the same client | Producing a possible-typo warning |
 
 The stage is deliberately not part of any check, so changing only the stage can neither create a duplicate nor hide one.
 
@@ -323,23 +321,16 @@ The stage is deliberately not part of any check, so changing only the stage can 
 parsed (`ParserUtil`) or loaded from the data file (`JsonAdaptedPerson`), rather than at every comparison:
 
 * `Phone` removes spaces and hyphens, so `9123 4567`, `9123-4567` and `91234567` are equal. A leading `+` is kept,
-  because inferring country codes would be guesswork. Instead, `Phone#isSameNumberIgnoringCountryCode` recognizes
-  the same number written with and without a country code of 1 to 3 digits (`+6591234567` and `91234567`) for
-  possible-typo warnings only, so it never blocks a record.
+  because inferring country codes would be guesswork.
 * `Email` is stored in lowercase.
 * `Name` and `EventType` values have leading and trailing whitespace removed and repeated spaces or tabs collapsed
-  into one space by `StringUtil#normalizeWhitespace`. For typed names, `Name#normalize` also replaces typographic
-  apostrophes (`’`, often inserted by autocorrect) with straight ones. Loading the data file does not, because a
-  hand-edited file that spells one engagement both ways would otherwise contain a duplicate and fail to load as a
-  whole. The trade-off is that a name stored with a curly apostrophe (only possible through the data file) and the
-  same name typed in a command are different clients, so re-adding that engagement produces a possible-typo warning
-  instead of a duplicate error.
+  into one space by `StringUtil#normalizeWhitespace`.
 
 **Duplicates are rejected.** `AddCommand` calls `Model#hasPerson` before adding, and `EditCommand` rejects an edit whose
 result has the identity of a *different* engagement. The error ends with `Messages#formatExistingEngagement`, which
 names the stored engagement with that identity, so the user can find and edit it instead. `UniquePersonList` enforces
-the same rule as a last line of defence and throws `DuplicatePersonException` if a command misses it. An edit that
-leaves every field unchanged returns `No changes were made.` before either check and keeps the current view.
+the same rule as a last line of defence and throws `DuplicatePersonException` if a command misses it. An edit that leaves every field unchanged returns
+`No changes were made.` before either check and keeps the current view.
 
 **Similar contacts produce a warning, not an error.** After a successful add, or an edit that changes the client's name,
 phone or email, the command shows the full list and calls `SimilarContactWarning#generate(displayedPersons, target)`.
@@ -353,8 +344,8 @@ The activity diagram below summarizes how the warning is built.
   already listed and comparing new matches with `isSameClient`.
 * At most `MAX_CONTACTS_LISTED` (3) clients are named; any others are summarized as `and N more`, keeping the feedback
   short enough for the result display.
-* Each entry states what is shared (e.g. `same phone`, `same email`, `same phone and email` or
-  `same phone apart from country code`), so the user can tell which record is likely mistyped.
+* Each entry states what is shared (`same phone`, `same email` or `same phone and email`), so the user can tell which
+  record is likely mistyped.
 * `ResultDisplay` adds a `warning` style class whenever `Messages#hasWarning` finds a line starting with `Warning: `,
   so the feedback is highlighted in amber and the warning is not mistaken for an ordinary success message.
 * An edit that changes only the event, the stage or the capitalization of the name does not warn again, because the
@@ -850,14 +841,11 @@ testers are expected to do more *exploratory* testing.
    names Alice's existing engagement, including its stage.
 3. Add an engagement for Bob Lim that has a different email, event type, and event date but the same phone number as
    Alice.<br>
-   Expected: The engagement is added and the feedback warns that it shares Alice's phone number.
+   Expected: The engagement is added, the feedback warns that it shares Alice's phone number, and the feedback panel
+   is highlighted in amber. The next command's feedback is no longer highlighted.
 4. Add an engagement for Carol Lee with distinct details, then edit Carol's email to Alice's email.<br>
    Expected: The edit succeeds and the feedback warns that Carol now shares Alice's email address.
-5. Add an engagement for Dan Ong whose phone is Alice's number with a `+65` country code, e.g. `p/+6591234567` if
-   Alice's phone is `91234567`, and whose email differs.<br>
-   Expected: The engagement is added, the feedback warns that it shares Alice's phone apart from the country code,
-   and the feedback panel is highlighted in amber. The next command's feedback is no longer highlighted.
-6. Add an engagement with the name `Raj s/o Kumar`, then run `find n/Raj s/o`.<br>
+5. Add an engagement with the name `Raj s/o Kumar`, then run `find n/Raj s/o`.<br>
    Expected: The name is stored with `s/o`, and the search finds that engagement. `edit 1 s/o` is rejected with the
    supported-stage constraint, because `s/` after the index is read as the stage prefix.
 

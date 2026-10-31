@@ -86,13 +86,14 @@ public class ParserUtil {
 
     /**
      * Parses a {@code String name} into a {@code Name}.
-     * The name is normalized as described in {@link Name#normalize(String)}.
+     * Leading and trailing whitespaces will be trimmed, and consecutive spaces or tabs will be replaced by
+     * one space.
      *
      * @throws ParseException if the given {@code name} is invalid.
      */
     public static Name parseName(String name) throws ParseException {
         requireNonNull(name);
-        String normalizedName = Name.normalize(name);
+        String normalizedName = StringUtil.normalizeWhitespace(name);
         if (!Name.isValidName(normalizedName)) {
             throw new ParseException(Name.MESSAGE_CONSTRAINTS);
         }

@@ -133,17 +133,4 @@ public class PersonSearchPredicateTest {
 
         assertFalse(predicate.test(person));
     }
-
-    @Test
-    public void nameWithEitherApostrophe_matchesBothSpellings() {
-        Person straight = new PersonBuilder().withName("Sean O'Connor").build();
-        Person curly = new PersonBuilder().withName("Sean O’Connor").build();
-        PersonSearchPredicate curlySearch = new PersonSearchPredicate(PersonSearchPredicate.Field.NAME, "o’connor");
-        PersonSearchPredicate straightSearch = new PersonSearchPredicate(PersonSearchPredicate.Field.NAME, "O'Connor");
-
-        assertTrue(curlySearch.test(straight));
-        assertTrue(curlySearch.test(curly));
-        assertTrue(straightSearch.test(curly));
-        assertTrue(curlySearch.equals(straightSearch));
-    }
 }

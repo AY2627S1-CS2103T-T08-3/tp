@@ -66,10 +66,6 @@ public class SimilarContactWarning {
             sharedDetails = "same phone and email";
         } else if (person.hasSamePhone(target)) {
             sharedDetails = "same phone";
-        } else if (person.hasMatchingPhone(target) && person.hasSameEmail(target)) {
-            sharedDetails = "same email, same phone apart from country code";
-        } else if (person.hasMatchingPhone(target)) {
-            sharedDetails = "same phone apart from country code";
         } else {
             sharedDetails = "same email";
         }

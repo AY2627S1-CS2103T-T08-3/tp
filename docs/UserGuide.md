@@ -145,7 +145,7 @@ Leading and trailing whitespace around values is ignored when commands are parse
 
 | Field | Prefix | Accepted format and stored value |
 | --- | --- | --- |
-| Name | `n/` | Letters (including accented letters such as `é`), digits, spaces, apostrophes (`'`), hyphens (`-`), periods (`.`), and slashes (`/`); the first character must be a letter or digit. For example, `O'Connor`, `Anne-Marie Tan`, and `John Tan Jr.` are accepted. Relation markers `s/o`, `d/o`, `a/l`, `a/p`, and `w/o` (in any letter case) can be used inside a name, e.g. `n/Raj s/o Kumar`. Other text such as `x/` after a space is read as a parameter, so avoid it inside names. Repeated whitespace is stored as one space, so `Amy  Lim` is stored as `Amy Lim`. A curly apostrophe (`’`) typed in a command, which autocorrect often inserts, is stored as a straight apostrophe, so `O’Connor` and `O'Connor` are the same name. |
+| Name | `n/` | Letters (including accented letters such as `é`), digits, spaces, apostrophes (`'`), hyphens (`-`), periods (`.`), and slashes (`/`); the first character must be a letter or digit. For example, `O'Connor`, `Anne-Marie Tan`, and `John Tan Jr.` are accepted. Relation markers `s/o`, `d/o`, `a/l`, `a/p`, and `w/o` (in any letter case) can be used inside a name, e.g. `n/Raj s/o Kumar`. Other text such as `x/` after a space is read as a parameter, so avoid it inside names. Repeated whitespace is stored as one space, so `Amy  Lim` is stored as `Amy Lim`. |
 | Phone number | `p/` | 8–15 digits, with an optional leading `+`. Spaces and hyphens are accepted but removed when the number is stored and displayed. |
 | Email | `e/` | `local-part@domain`, up to 254 characters. The local part uses alphanumeric groups separated by `+`, `_`, `.`, or `-`; those special characters cannot start or end the local part or occur consecutively. The domain has at least two dot-separated labels. Each domain label must start and end with an alphanumeric character. Hyphens are allowed inside a domain label, but they cannot occur consecutively. For example, `john@my-domain.com` is accepted, while `john@my--domain.com` is rejected. The final domain label must contain at least two characters. The address is stored in lowercase. |
 | Event type | `t/` | 1–40 letters, digits, spaces, or hyphens, with at least one letter or digit. Repeated whitespace is stored as one space. |
@@ -157,7 +157,7 @@ upcoming views can therefore change which engagement an index identifies.
 
 **Both phone and email are required.** You cannot leave either field empty when adding, or clear it with `edit 1 p/` or `edit 1 e/`. Omit a field from an edit command to retain its current value. Event dates may be in the past, so completed work can remain in your records.
 
-Phone formatting does not infer country codes: `+65 9123 4567` is stored as `+6591234567`, while `91234567` stays `91234567`. The leading `+` is retained, so these two records are not duplicates of each other. However, if a different client identity uses the same number with or without a country code, ShutterLink shows a possible-typo warning. Use a consistent format for repeat clients.
+Phone formatting does not infer country codes: `+65 9123 4567` is stored as `+6591234567`, while `91234567` stays `91234567`. The leading `+` is retained and matters when checking duplicate phone numbers. Use a consistent format for repeat clients.
 
 ### Viewing help: `help`
 
@@ -204,9 +204,8 @@ ordinary success message:
 ![Feedback panel highlighted in amber, showing a possible-typo warning after an add.](images/ug-typo-warning.png)
 
 Each `#INDEX` refers to the full list shown after the command, and the text in brackets states which details are
-shared. The same number written with and without a country code of 1–3 digits (e.g. `+6591234567` and `91234567`)
-is reported as `same phone apart from country code`. If a long warning does not fit, scroll the feedback panel. A client with several engagements is listed once, and at most three clients are
-named before the warning summarizes the rest as `and N more`. The add has already succeeded; inspect the numbered records in the warning and correct the mistaken one using `edit` or `delete`. A warning is not a duplicate rejection. For repeat engagements with the same name, phone, and email, a different event type or date is accepted without this client-identity warning.
+shared. If a long warning does not fit, scroll the feedback panel. A client with several engagements is listed once, and at most three clients are named before the warning
+summarizes the rest as `and N more`. The add has already succeeded; inspect the numbered records in the warning and correct the mistaken one using `edit` or `delete`. A warning is not a duplicate rejection. For repeat engagements with the same name, phone, and email, a different event type or date is accepted without this client-identity warning.
 
 A duplicate is rejected even if the new stage differs, and the error names the existing engagement, for example
 `Existing engagement: Avery Tan | Wedding | 2026-12-20 | Booked.` Find it and change its stage using
@@ -342,7 +341,7 @@ Phone numbers are stored without spaces or hyphens, so searching with digits onl
 from all saved engagements and replaces the previous search or sort. The heading becomes `Engagements (N)`; edit,
 advance, and delete use the displayed result indexes. Use `list` to restore every engagement.
 
-The whole search value is matched as a substring: `find n/John Tan` looks for that phrase, rather than separate matches for `John` or `Tan`. In name searches, curly (`’`) and straight (`'`) apostrophes match each other, so `find n/O’Connor` finds `O'Connor`, and repeated spaces count as one space. `find p/9123` can match several engagements, including repeat clients. Spaces and hyphens are removed from phone searches, so `find p/9123 4567` and `find p/9123-4567` can match a stored `91234567`. With no matches, the list is empty and feedback is `No matching engagements found.`; run `list` to restore your records.
+The whole search value is matched as a substring: `find n/John Tan` looks for that phrase, rather than separate matches for `John` or `Tan`. `find p/9123` can match several engagements, including repeat clients. Spaces and hyphens are removed from phone searches, so `find p/9123 4567` and `find p/9123-4567` can match a stored `91234567`. With no matches, the list is empty and feedback is `No matching engagements found.`; run `list` to restore your records.
 
 | Invalid input | Reason |
 | --- | --- |
@@ -483,6 +482,11 @@ If a previously populated list unexpectedly opens empty after manual editing, us
 ## Known issues
 
 1. **A window can reopen off-screen after disconnecting a monitor.** Close ShutterLink, move `preferences.json` from the launch folder to a backup location, and restart. This resets window placement without deleting `data/addressbook.json`.
+
+1. **Curly and straight apostrophes are different characters in names.** Names are stored exactly as typed, so
+   `O’Connor` (curly apostrophe, often inserted by autocorrect) and `O'Connor` are treated as different clients. If
+   they share a phone number or email, ShutterLink shows a possible-typo warning; use `edit` to make the names
+   consistent.
 
 --------------------------------------------------------------------------------------------------------------------
 
