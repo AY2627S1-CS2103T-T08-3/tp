@@ -90,7 +90,7 @@ class, which provides common functionality for loading and managing their corres
 
 The UI is implemented using JavaFX. Its main parts include:
 
-* `MainWindow`, which contains the main application layout.
+* `MainWindow`, which contains the main application layout and event schedule chart.
 * `CommandBox`, which accepts user commands.
 * `ResultDisplay`, which displays feedback messages.
 * `PersonListPanel`, which displays the filtered and sorted list of engagements.
@@ -106,7 +106,10 @@ The `UI` component,
 * displays command results returned by `Logic`;
 * observes the filtered and sorted engagement list exposed through `Logic`;
 * depends on selected `Model` classes when displaying engagement data;
-* updates the displayed engagements whenever the observed list changes.
+* updates the displayed engagements and event schedule chart whenever the observed list changes.
+
+`MainWindow` rebuilds the chart's Past, Upcoming (today through today + 6 days), and Later slices when the displayed
+`ObservableList<Person>` changes. The chart summarizes the current view and does not modify or save model data.
 
 `ResultDisplay` colours its feedback by outcome: results are green, results containing a warning are amber (see
 [Detecting duplicate engagements and possible typos](#detecting-duplicate-engagements-and-possible-typos)), and

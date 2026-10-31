@@ -482,6 +482,38 @@
     -fx-text-fill: #e2e8f0;
 }
 
+.event-schedule-panel {
+    -fx-background-color: #111827;
+    -fx-border-color: #334155;
+    -fx-border-width: 1px;
+    -fx-padding: 4 18 4 8;
+}
+
+.event-schedule-panel .chart-title {
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 15px;
+    -fx-padding: 8 0 0 0;
+    -fx-text-fill: #e2e8f0;
+}
+
+.event-schedule-panel .default-color0.chart-pie {
+    -fx-pie-color: #64748b;
+}
+
+.event-schedule-panel .default-color1.chart-pie {
+    -fx-pie-color: #38bdf8;
+}
+
+.event-schedule-panel .default-color2.chart-pie {
+    -fx-pie-color: #a78bfa;
+}
+
+.event-schedule-legend {
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 13px;
+    -fx-padding: 12px;
+}
+
 .contact-column-header {
     -fx-background-color: #152033;
     -fx-background-radius: 4px;

@@ -55,9 +55,16 @@ The screenshots below use fictional engagements in the current interface. Your r
 | --- | --- |
 | **Command** | Type one command, then press Enter. Accepted commands clear the input; rejected commands retain the text for correction. |
 | **Feedback** | Read the command result or error. Results are shown in green, possible-typo warnings after a successful add or edit in amber, and errors in red. The text always states the outcome, so the colours are only a visual aid. |
+| Event schedule | Compare the proportions of past, upcoming and later engagements in the current displayed list. The legend shows each count. |
 | List heading | Check which view is active and how many engagements it contains. |
 | Engagement cards | Read each displayed index, client name, phone, email, event type, event date, and stage. Scroll to see additional cards. Double-click an engagement card, or select it with the keyboard and press Enter, to open its complete details. |
 | **Help** | Open the command reference using the button, `help`, or F1. |
+
+In the event schedule chart, **Upcoming** means an event dated today through the following six calendar dates,
+inclusive. **Past** means before today, while **Later** means seven or more days after today. The chart follows the
+current displayed list, so a `find`, `list`, or `upcoming` command can change its proportions.
+It summarizes the view only; use `upcoming` when you want the engagement list itself filtered and sorted by date.
+The chart recalculates after the displayed list changes or the app restarts; it does not refresh automatically at midnight.
 
 The displayed index is a temporary position, not a permanent client ID. After a search, sort, add, edit, advance, or deletion, check the list again before choosing an index. `edit 1` affects the first engagement currently shown, which may be a different engagement from the first one in the full list.
 
