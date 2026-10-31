@@ -4,7 +4,6 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -107,7 +106,6 @@ public class MainWindow extends UiPart<Stage> {
 
         eventScheduleChart.setAnimated(false);
         eventScheduleChart.setLabelsVisible(false);
-        eventScheduleChart.setLegendVisible(false);
         persons.addListener((ListChangeListener<Person>) change -> updateEventScheduleChart(persons));
         updateEventScheduleChart(persons);
 
@@ -142,14 +140,13 @@ public class MainWindow extends UiPart<Stage> {
             }
         }
 
-        ObservableList<PieChart.Data> chartData = FXCollections.observableArrayList(
+        eventScheduleChart.getData().setAll(
                 new PieChart.Data("Past (" + pastCount + ")", pastCount),
                 new PieChart.Data("Upcoming (" + upcomingCount + ")", upcomingCount),
                 new PieChart.Data("Later (" + laterCount + ")", laterCount));
-        eventScheduleChart.setData(chartData);
-        pastLegend.setText("●  Past (" + pastCount + ")");
-        upcomingLegend.setText("●  Upcoming (" + upcomingCount + ")");
-        laterLegend.setText("●  Later (" + laterCount + ")");
+        pastLegend.setText("Past (" + pastCount + ")");
+        upcomingLegend.setText("Upcoming (" + upcomingCount + ")");
+        laterLegend.setText("Later (" + laterCount + ")");
     }
 
     /**

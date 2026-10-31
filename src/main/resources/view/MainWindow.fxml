@@ -69,9 +69,9 @@
                       legendVisible="false" title="Event schedule" HBox.hgrow="ALWAYS" />
             <VBox alignment="CENTER_LEFT" minWidth="130" prefWidth="170" maxWidth="220"
                   spacing="10" styleClass="event-schedule-legend">
-              <Label fx:id="pastLegend" styleClass="event-legend-past" />
-              <Label fx:id="upcomingLegend" styleClass="event-legend-upcoming" />
-              <Label fx:id="laterLegend" styleClass="event-legend-later" />
+              <Label fx:id="pastLegend" style="-fx-text-fill: #94a3b8" />
+              <Label fx:id="upcomingLegend" style="-fx-text-fill: #38bdf8" />
+              <Label fx:id="laterLegend" style="-fx-text-fill: #a78bfa" />
             </VBox>
           </HBox>
         </HBox>

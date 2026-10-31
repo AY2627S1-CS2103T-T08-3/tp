@@ -483,9 +483,7 @@
 
 .event-schedule-panel {
     -fx-background-color: #111827;
-    -fx-background-radius: 0;
     -fx-border-color: #334155;
-    -fx-border-radius: 0;
     -fx-border-width: 1px;
     -fx-padding: 4 18 4 8;
 }
@@ -494,14 +492,6 @@
     -fx-font-family: "Segoe UI Semibold";
     -fx-font-size: 15px;
     -fx-text-fill: #e2e8f0;
-}
-
-.event-schedule-panel .chart-legend {
-    -fx-background-color: transparent;
-}
-
-.event-schedule-panel .chart-legend-item {
-    -fx-text-fill: #cbd5e1;
 }
 
 .event-schedule-panel .default-color0.chart-pie {
@@ -520,18 +510,6 @@
     -fx-font-family: "Segoe UI Semibold";
     -fx-font-size: 13px;
     -fx-padding: 12px;
-}
-
-.event-schedule-legend .event-legend-past {
-    -fx-text-fill: #94a3b8;
-}
-
-.event-schedule-legend .event-legend-upcoming {
-    -fx-text-fill: #38bdf8;
-}
-
-.event-schedule-legend .event-legend-later {
-    -fx-text-fill: #a78bfa;
 }
 
 .contact-column-header {
