@@ -203,6 +203,9 @@ The `Storage` component,
 
 Classes used by multiple components are in the `seedu.address.commons` package.
 
+`MainWindow` handles Ctrl+L (Command+L on macOS) through its scene key filter, focusing the command input
+and consuming the shortcut without executing a command or changing the input text.
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Implementation**
