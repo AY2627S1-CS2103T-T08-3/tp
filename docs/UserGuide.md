@@ -61,11 +61,12 @@ The screenshots below use fictional engagements in the current interface. Your r
 
 The displayed index is a temporary position, not a permanent client ID. After a search, sort, add, edit, advance, or deletion, check the list again before choosing an index. `edit 1` affects the first engagement currently shown, which may be a different engagement from the first one in the full list.
 
-If a value is clipped in the engagement list, double-click the engagement card to view all its stored fields in a
+Hover over a clipped field to read its full value in a tooltip, or double-click the engagement card to view all fields in a
 resizable details dialog. To use the keyboard, press Tab until the engagement list is focused, select a row using
 the Up and Down arrow keys, and press Enter. Inside the dialog, use Tab to focus the details text for selection and
-copying, and press Escape to close it. You can also widen the main window and use the horizontal scrollbar where
-available. The overview screenshot uses a wider window to show all six columns.
+copying, or use **Copy details** to copy all fields to the clipboard. Press Escape to close the dialog. You can also
+widen the main window and use the horizontal scrollbar where available. The overview screenshot uses a wider window
+to show all six columns.
 
 ### Try a client workflow
 
@@ -189,7 +190,17 @@ ignore capitalization. A repeat client can still have multiple engagements with 
 After a successful add, the complete list is displayed in insertion order. If the new engagement shares a phone
 number or email address with another client identity, ShutterLink also displays a possible-typo warning.
 
-For example, adding `Avery Tan` and later adding `Avery Tna` with the same phone and email creates separate client identities and can produce a warning. The add has already succeeded; inspect the numbered records in the warning and correct the mistaken one using `edit` or `delete`. A warning is not a duplicate rejection. For repeat engagements with the same name, phone, and email, a different event type or date is accepted without this client-identity warning.
+For example, adding `Avery Tan` and later adding `Avery Tna` with the same phone and email creates separate client identities and produces a warning such as:
+
+```text
+New engagement added: Avery Tna | Wedding | 2026-12-20 | Enquiry.
+Warning: possible typo. Shares details with #1 Avery Tan (same phone and email).
+If this is a mistake, fix the wrong engagement with edit INDEX or delete INDEX.
+```
+
+Each `#INDEX` refers to the full list shown after the command, and the text in brackets states which details are
+shared. A client with several engagements is listed once, and at most three clients are named before the warning
+summarizes the rest as `and N more`. The add has already succeeded; inspect the numbered records in the warning and correct the mistaken one using `edit` or `delete`. A warning is not a duplicate rejection. For repeat engagements with the same name, phone, and email, a different event type or date is accepted without this client-identity warning.
 
 A duplicate is rejected even if the new stage differs. Change the existing engagement's stage using `edit INDEX s/STAGE` instead.
 
@@ -463,6 +474,11 @@ If a previously populated list unexpectedly opens empty after manual editing, us
 ## Known issues
 
 1. **A window can reopen off-screen after disconnecting a monitor.** Close ShutterLink, move `preferences.json` from the launch folder to a backup location, and restart. This resets window placement without deleting `data/addressbook.json`.
+
+1. **Curly and straight apostrophes are different characters in names.** Names are stored exactly as typed, so
+   `O’Connor` (curly apostrophe, often inserted by autocorrect) and `O'Connor` are treated as different clients. If
+   they share a phone number or email, ShutterLink shows a possible-typo warning; use `edit` to make the names
+   consistent.
 
 --------------------------------------------------------------------------------------------------------------------
 
