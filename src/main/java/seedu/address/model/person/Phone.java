@@ -12,6 +12,7 @@ public class Phone {
 
     public static final int MIN_DIGITS = 8;
     public static final int MAX_DIGITS = 15;
+    public static final int MAX_COUNTRY_CODE_DIGITS = 3;
     public static final String MESSAGE_CONSTRAINTS = "Invalid phone number. Enter " + MIN_DIGITS + "-"
             + MAX_DIGITS + " digits, optionally starting with +; spaces and hyphens are allowed.";
 
@@ -52,8 +53,8 @@ public class Phone {
     }
 
     /**
-     * Returns true if this phone and {@code other} are the same number written with and without a country code,
-     * e.g. {@code +6591234567} and {@code 91234567}.
+     * Returns true if this phone and {@code other} are the same number written with and without a country code of
+     * 1 to {@value #MAX_COUNTRY_CODE_DIGITS} digits, e.g. {@code +6591234567} and {@code 91234567}.
      */
     public boolean isSameNumberIgnoringCountryCode(Phone other) {
         requireNonNull(other);
@@ -63,8 +64,8 @@ public class Phone {
         }
         String numberWithCode = hasCountryCode ? value : other.value;
         String numberWithoutCode = hasCountryCode ? other.value : value;
-        // The "+" and at least one country-code digit must precede the local number.
-        return numberWithCode.length() > numberWithoutCode.length() + 1
+        int countryCodeDigits = numberWithCode.length() - numberWithoutCode.length() - 1;
+        return countryCodeDigits >= 1 && countryCodeDigits <= MAX_COUNTRY_CODE_DIGITS
                 && numberWithCode.endsWith(numberWithoutCode);
     }
 

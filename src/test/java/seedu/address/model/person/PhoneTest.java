@@ -100,6 +100,13 @@ public class PhoneTest {
         // "+" alone, without a country-code digit, is not a country code -> returns false
         assertFalse(new Phone("+91234567").isSameNumberIgnoringCountryCode(local));
 
+        // country codes of 1 to 3 digits -> returns true
+        assertTrue(new Phone("+14155550100").isSameNumberIgnoringCountryCode(new Phone("4155550100")));
+        assertTrue(new Phone("+971501234567").isSameNumberIgnoringCountryCode(new Phone("501234567")));
+
+        // more than 3 leading digits cannot be a country code -> returns false
+        assertFalse(new Phone("+659123456789").isSameNumberIgnoringCountryCode(new Phone("23456789")));
+
         // null -> throws NullPointerException
         assertThrows(NullPointerException.class, () -> local.isSameNumberIgnoringCountryCode(null));
     }

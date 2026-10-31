@@ -324,8 +324,8 @@ parsed (`ParserUtil`) or loaded from the data file (`JsonAdaptedPerson`), rather
 
 * `Phone` removes spaces and hyphens, so `9123 4567`, `9123-4567` and `91234567` are equal. A leading `+` is kept,
   because inferring country codes would be guesswork. Instead, `Phone#isSameNumberIgnoringCountryCode` recognizes
-  the same number written with and without a country code (`+6591234567` and `91234567`) for possible-typo warnings
-  only, so it never blocks a record.
+  the same number written with and without a country code of 1 to 3 digits (`+6591234567` and `91234567`) for
+  possible-typo warnings only, so it never blocks a record.
 * `Email` is stored in lowercase.
 * `Name` and `EventType` values have leading and trailing whitespace removed and repeated spaces or tabs collapsed
   into one space by `StringUtil#normalizeWhitespace`. For typed names, `Name#normalize` also replaces typographic
