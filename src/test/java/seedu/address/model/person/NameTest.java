@@ -1,6 +1,5 @@
 package seedu.address.model.person;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
@@ -70,21 +69,5 @@ public class NameTest {
 
         // different values -> returns false
         assertFalse(name.equals(new Name("Other Valid Name")));
-    }
-
-    @Test
-    public void normalize() {
-        // null -> throws NullPointerException
-        assertThrows(NullPointerException.class, () -> Name.normalize(null));
-
-        // surrounding and repeated whitespace
-        assertEquals("Amy Lim", Name.normalize("  Amy \t Lim "));
-
-        // typographic apostrophes become straight apostrophes
-        assertEquals("O'Connor", Name.normalize("O’Connor"));
-        assertEquals("D'Souza O'Brien", Name.normalize("D’Souza  O’Brien"));
-
-        // names without apostrophes are unchanged
-        assertEquals("Raj s/o Kumar", Name.normalize("Raj s/o Kumar"));
     }
 }

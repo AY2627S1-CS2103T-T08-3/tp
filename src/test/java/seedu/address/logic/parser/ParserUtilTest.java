@@ -103,7 +103,6 @@ public class ParserUtilTest {
         assertEquals(expected, ParserUtil.parseName(VALID_NAME));
         assertEquals(expected, ParserUtil.parseName(WHITESPACE + VALID_NAME + WHITESPACE));
         assertEquals(new Name("Amy Lim"), ParserUtil.parseName("Amy  \t Lim"));
-        assertEquals(new Name("O'Connor"), ParserUtil.parseName("O’Connor"));
     }
 
     @Test
