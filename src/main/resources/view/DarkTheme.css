@@ -542,6 +542,12 @@
     -fx-border-width: 0 0 0 4;
 }
 
+.result-display.feedback-error {
+    -fx-text-fill: #fb7185;
+    -fx-border-color: #fb7185;
+    -fx-border-width: 0 0 0 4;
+}
+
 #resultDisplay .content {
     -fx-background-color: transparent, #0f172a, transparent, #0f172a;
 }

@@ -357,6 +357,9 @@ The activity diagram below summarizes how the warning is built.
   `same phone apart from country code`), so the user can tell which record is likely mistyped.
 * `ResultDisplay` adds a `warning` style class whenever `Messages#hasWarning` finds a line starting with `Warning: `,
   so the feedback is highlighted in amber and the warning is not mistaken for an ordinary success message.
+  `MainWindow` shows command errors through `ResultDisplay#setErrorToUser`, which uses a `feedback-error` style class
+  (red, matching the command field's error border). Each message replaces the previous highlight. The name avoids
+  the global `.error` rule in `Extensions.css`, whose `!important` text colour would otherwise apply.
 * An edit that changes only the event, the stage or the capitalization of the name does not warn again, because the
   client details are unchanged.
 
