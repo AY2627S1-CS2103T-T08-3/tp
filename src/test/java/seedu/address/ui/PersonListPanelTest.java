@@ -1,6 +1,7 @@
 package seedu.address.ui;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.testutil.Assert.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -21,5 +22,10 @@ class PersonListPanelTest {
         String details = PersonListPanel.formatPersonDetails(person);
 
         assertTrue(details.contains("Email: " + LONG_EMAIL));
+    }
+
+    @Test
+    void formatPersonDetails_nullPerson_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> PersonListPanel.formatPersonDetails(null));
     }
 }

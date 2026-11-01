@@ -89,6 +89,11 @@ public class FindCommandParserTest {
     }
 
     @Test
+    public void parse_prefixedValueWithPreamble_throwsParseException() {
+        assertParseFailure(parser, "Alice n/Bob", INVALID_FORMAT);
+    }
+
+    @Test
     public void parse_emptyValue_throwsParseException() {
         for (String prefix : new String[]{"n/", "p/", "e/", "t/", "s/"}) {
             for (String value : new String[]{"", " ", "\t"}) {
