@@ -130,7 +130,7 @@ public class UniquePersonListTest {
     @Test
     public void remove_personWithSameIdentityButDifferentDetails_throwsPersonNotFoundException() {
         uniquePersonList.add(ALICE);
-        Person editedAlice = new PersonBuilder(ALICE).withPhone("99999999").build();
+        Person editedAlice = new PersonBuilder(ALICE).withStage("Booked").build();
 
         assertThrows(PersonNotFoundException.class, () -> uniquePersonList.remove(editedAlice));
         assertEquals(List.of(ALICE), uniquePersonList.asUnmodifiableObservableList());
