@@ -7,7 +7,7 @@ We are a team based in the [School of Computing, National University of Singapor
 
 ## Project team
 
-### Ruiduan
+### Wang Ruiduan
 
 <img src="images/markadodo.png" width="200px">
 
@@ -22,8 +22,8 @@ We are a team based in the [School of Computing, National University of Singapor
 
 [[github](https://github.com/sonlexuan3000)]
 
-* Role: Team Lead
-* Responsibilities: UI
+* Role: Product engineer
+* Responsibilities: Full Stack
 
 ### Vu Dang Khoa
 
@@ -31,7 +31,7 @@ We are a team based in the [School of Computing, National University of Singapor
 
 [[github](https://github.com/ChalasDK22)]
 
-* Role: Student Developer
+* Role: Product engineer
 * Responsibilities: Full Stack
 
 ### Jonathan Wong
@@ -40,7 +40,7 @@ We are a team based in the [School of Computing, National University of Singapor
 
 [[github](http://github.com/24JonW)]
 
-* Role: Developer
+* Role: Product engineer
 * Responsibilities: Full Stack
 
 ### Yu Ke Mi
@@ -49,5 +49,5 @@ We are a team based in the [School of Computing, National University of Singapor
 
 [[github](https://github.com/yukemii)]
 
-* Role: Developer
-* Responsibilities: UI and UX
+* Role: Product engineer
+* Responsibilities: Full Stack
