@@ -178,13 +178,13 @@ Opens a concise in-app command reference and provides a link to this User Guide.
 
 Format: `help`
 
-Use F1 or the **Help** button for the same panel. Scroll through the command reference, then press Escape or use **Close** to return to the command field. The underlying list and its indexes are retained. `help 123` is rejected because Help takes no arguments.
+Use F1 or the **Help** button for the same window. Scroll through the command reference, then press Escape or use **Close** to return to the command field. The underlying list and its indexes are retained. `help 123` is rejected because Help takes no arguments.
 
 Use **Copy User Guide link** to copy the guide's URL, then paste it into your browser. You can reach the button with
 Tab and activate it with Space. The button shows **Link copied** when copying succeeds, or **Copy failed** if the
 clipboard does not accept the URL; you can try again. Copying leaves Help open and replaces the clipboard contents.
 
-![Current ShutterLink Help panel with command formats, explanations, and a Close button.](images/ug-help.png)
+![Current ShutterLink Help window with command formats, explanations, and a Close button.](images/ug-help.png)
 
 
 ### Adding an engagement: `add`
@@ -254,7 +254,7 @@ Each command starts from all records, replacing the previous search or sort.
 Displayed indexes are recalculated; subsequent edit, advance, and delete commands use the indexes currently shown.
 Sorting does not change the saved records or their insertion order. Restarting restores insertion order.
 
-Only the `sort/` prefix and the value `date` are supported. Spaces and tabs may separate arguments,
+Only the `sort/` prefix and the value `date` are supported. Extra spaces between arguments are accepted,
 but the command must occupy one line. Use `find s/STAGE` to filter by stage; `list` does not accept a stage filter.
 
 | Invalid input | Feedback |
