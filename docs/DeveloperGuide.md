@@ -698,6 +698,29 @@ the same client repeat those three fields.
 
       Use case ends.
 
+**Use case: UC07 - List and sort engagements**
+
+**MSS**
+
+1. User requests to view all engagements, optionally sorted by event date.
+2. ShutterLink shows all engagements in insertion order, or in ascending event-date order when sorting is requested. Engagements with the same event date retain their insertion order.
+
+   Use case ends.
+
+**Extensions**
+
+* 1a. The request contains an unsupported sort option, repeated parameter, empty value, or unexpected argument.
+
+    * 1a1. ShutterLink shows an error message and keeps the current displayed list unchanged.
+
+      Use case resumes at step 1.
+
+* 2a. There are no stored engagements.
+
+    * 2a1. ShutterLink informs the user that there are no engagements to display.
+
+      Use case ends.
+
 ### Non-Functional Requirements
 
 These requirements describe the intended quality of the current ShutterLink release for an independent freelance
