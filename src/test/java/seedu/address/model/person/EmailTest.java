@@ -52,6 +52,7 @@ public class EmailTest {
         assertFalse(Email.isValidEmail("peterjack@-example.com")); // domain name starts with a hyphen
         assertFalse(Email.isValidEmail("peterjack@example.com-")); // domain name ends with a hyphen
         assertFalse(Email.isValidEmail("peterjack@example.c")); // top level domain has less than two chars
+        assertFalse(Email.isValidEmail("peterjack@example.a--b")); // consecutive hyphens in final domain label
         assertFalse(Email.isValidEmail("peterjack@gmail")); // domain without a period
         assertFalse(Email.isValidEmail("a@bc")); // single-label domain
         assertFalse(Email.isValidEmail("test@localhost")); // single-label domain
@@ -64,6 +65,7 @@ public class EmailTest {
         assertTrue(Email.isValidEmail("PeterJack+1190@example.com")); // '+' symbol in local part
         assertTrue(Email.isValidEmail("PeterJack-1190@example.com")); // hyphen in local part
         assertTrue(Email.isValidEmail("a@bc.de")); // minimal
+        assertTrue(Email.isValidEmail("peterjack@example.a-b")); // hyphen in final domain label
         assertTrue(Email.isValidEmail("123@145.com")); // numeric local part and domain label
         assertTrue(Email.isValidEmail("a".repeat(Email.MAX_LENGTH - "@example.com".length())
                 + "@example.com")); // maximum length
@@ -71,6 +73,27 @@ public class EmailTest {
         assertTrue(Email.isValidEmail("peter_jack@very-very-very-long-example.com")); // long domain name
         assertTrue(Email.isValidEmail("if.you.dream.it_you.can.do.it@example.com")); // long local part
         assertTrue(Email.isValidEmail("e1234567@u.nus.edu")); // more than one period in domain
+    }
+
+    @Test
+    public void isValidEmail_domainLabelEdgeCases() {
+        assertFalse(Email.isValidEmail("a@example.-ab")); // leading hyphen in final label
+        assertFalse(Email.isValidEmail("a@example.ab-")); // trailing hyphen in final label
+        assertFalse(Email.isValidEmail("a@example.a_b")); // underscore in final label
+        assertFalse(Email.isValidEmail("a@example..ab")); // empty domain label
+        assertFalse(Email.isValidEmail("a@foo-.example.ab")); // trailing hyphen in an earlier label
+
+        assertTrue(Email.isValidEmail("a@example.ab")); // two-character final label
+        assertTrue(Email.isValidEmail("a@example.a-1")); // digit after a hyphen
+        assertTrue(Email.isValidEmail("a@example.a-b-c")); // multiple separated hyphens
+        assertTrue(Email.isValidEmail("a@foo-bar.example.a-b")); // hyphens in different labels
+    }
+
+    @Test
+    public void isValidEmail_localPartSeparatorsCannotBeAdjacent() {
+        assertFalse(Email.isValidEmail("a+_b@example.com"));
+        assertFalse(Email.isValidEmail("a.-b@example.com"));
+        assertTrue(Email.isValidEmail("a+b_c.d-e@example.com"));
     }
 
     @Test
