@@ -118,6 +118,12 @@ style class using the same `-error-colour` as the command field's error border. 
 highlight. The class is not named `error` because the global `.error` rule in `Extensions.css` sets an `!important`
 text colour that would override it.
 
+`PersonCard` shows the stage as a badge. `PersonCard#getStageStyleClass` derives a style class such as
+`stage-shot-completed` from the `Stage` constant, using `Locale.ROOT` so that the name matches `DarkTheme.css` in
+every locale, and the details dialog reuses the same class for its stage badge. A new stage therefore needs only a
+matching CSS rule; without one, it uses the neutral `stage-chip` colours shared with `Enquiry`. When the displayed list
+is empty, `PersonListPanel` shows a `No engagements to display.` placeholder instead of a blank area.
+
 ### Logic component
 
 **API**:

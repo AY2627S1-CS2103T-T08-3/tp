@@ -710,3 +710,35 @@
 #columnHeader {
     -fx-padding: 7 13 7 13;
 }
+
+/* Stage badges on cards and in the details dialog. Enquiry uses the base colours. */
+.label.stage-chip {
+    -fx-background-color: #334155;
+    -fx-background-radius: 10px;
+    -fx-padding: 2px 8px;
+    -fx-font-family: "Segoe UI Semibold";
+}
+
+.label.stage-booked {
+    -fx-background-color: #075985;
+    -fx-text-fill: #e0f2fe;
+}
+
+.label.stage-shot-completed {
+    -fx-background-color: #5b21b6;
+    -fx-text-fill: #ede9fe;
+}
+
+.label.stage-awaiting-payment {
+    -fx-background-color: #9a3412;
+    -fx-text-fill: #ffedd5;
+}
+
+.label.stage-delivered {
+    -fx-background-color: #166534;
+    -fx-text-fill: #dcfce7;
+}
+
+.list-placeholder {
+    -fx-text-fill: #94a3b8;
+}

@@ -57,7 +57,7 @@ The screenshots below use fictional engagements in the current interface. Your r
 | **Feedback** | Read the command result or error. Results are shown in green, possible-typo warnings after a successful add or edit in amber, and errors in red. The text always states the outcome, so the colours are only a visual aid. |
 | Event schedule | Compare the proportions of past, upcoming and later engagements in the current displayed list. The legend shows each count. |
 | List heading | Check which view is active and how many engagements it contains. |
-| Engagement cards | Read each displayed index, client name, phone, email, event type, event date, and stage. Scroll to see additional cards. Double-click an engagement card, or select it with the keyboard and press Enter, to open its complete details. |
+| Engagement cards | Read each displayed index, client name, phone, email, event type, event date, and stage. Each stage has its own badge colour, so you can scan the workflow at a glance; the stage name is always shown as text too. An empty view shows `No engagements to display.` Scroll to see additional cards. Double-click an engagement card, or select it with the keyboard and press Enter, to open its complete details. |
 | **Help** | Open the command reference using the button, `help`, or F1. |
 
 In the event schedule chart, **Upcoming** means an event dated today through the following six calendar dates,

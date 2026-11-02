@@ -1,11 +1,14 @@
 package seedu.address.ui;
 
+import java.util.Locale;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Stage;
 
 /**
  * A UI component that displays information of a {@code Person}.
@@ -53,8 +56,16 @@ public class PersonCard extends UiPart<Region> {
         eventType.setText(person.getEventType().value);
         email.setText(person.getEmail().value);
         eventDate.setText(person.getEventDate().toString());
-        stage.setText("Stage: " + person.getStage());
+        stage.setText(person.getStage().toString());
+        stage.getStyleClass().add(getStageStyleClass(person.getStage()));
         addFullValueTooltips(name, phone, email, eventType, stage, eventDate);
+    }
+
+    /**
+     * Returns the style class that colours {@code stage}, such as {@code stage-shot-completed}.
+     */
+    static String getStageStyleClass(Stage stage) {
+        return "stage-" + stage.name().toLowerCase(Locale.ROOT).replace('_', '-');
     }
 
     /**

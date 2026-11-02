@@ -46,6 +46,17 @@ class PersonListPanelUiTest {
         });
     }
 
+    @Test
+    void constructor_emptyList_showsPlaceholderMessage() throws Exception {
+        JavaFxTestUtil.runOnJavaFxThread(() -> {
+            PersonListPanel panel = new PersonListPanel(FXCollections.observableArrayList());
+            ListView<?> listView = (ListView<?>) panel.getRoot().lookup("#personListView");
+
+            assertEquals("No engagements to display.", ((Label) listView.getPlaceholder()).getText());
+            return null;
+        });
+    }
+
     private static <T> ListCell<T> createCell(ListView<T> listView) {
         return listView.getCellFactory().call(listView);
     }
