@@ -468,11 +468,14 @@ the same client repeat those three fields.
 | `***` | As a photographer, I can delete an engagement, so that my engagement list does not fill up with irrelevant work. |
 | `***` | As a photographer, I can search engagements by client phone number or email address, so that I can find a client's work even when I do not remember their name. |
 | `***` | As a photographer, I can search engagements by event type, so that I can quickly locate specific types of shoots. |
+| `***` | As a photographer, I can find all engagements at a given stage, so that I can follow up on every job that needs the same next step. |
 | `***` | As a photographer, I can view engagements sorted by event date, including past events, so that I can review them chronologically. |
 | `***` | As a photographer, I can view all engagements with events happening within the next seven days, so that I can prepare logistics in advance. |
 | `***` | As a fast typist, I can add, edit, and find engagements by typing commands, so that I can manage work faster than with a form. |
 | `***` | As a photographer, I can type `help` to open a concise command reference, so that I can recall common syntax without leaving the application. |
 | `**` | As a photographer, I can record multiple engagements for the same repeat client, so that their separate events remain available. |
+| `**` | As a photographer, I can open the complete details of an engagement from the list, so that I can read and copy fields that are cut off in the list. |
+| `**` | As a photographer, I can see how many engagements in the current view are past, upcoming or later, so that I can judge my workload at a glance. |
 | `*` | As a photographer, I receive a possible-typo warning when adding an engagement or editing its client contact details causes it to share a phone number or email address with a different client identity. |
 
 
@@ -722,13 +725,12 @@ stage, so a repeat client may appear in multiple engagement records.
 5. **Persistence (NFR-05).** After a data-changing command reports success, its changes shall be saved locally
    and restored after a normal shutdown and restart, preserving all supported field values and record order.
    This assumes writable storage with sufficient space and excludes external file modification or disk failure.
-6. **Failure handling (NFR-06).** Invalid input and command-execution errors shall leave records, the current displayed
-   view, and displayed indexes unchanged. A failed save shall be reported as an error. The current implementation
-   does not roll back a model mutation that occurred before that failure, so the in-memory state can differ from the
-   file until another save succeeds or the app restarts. A failure detected before writing, such as insufficient
-   permissions, leaves the existing file unchanged, but saving is not atomic and an interrupted write is not guaranteed
-   to preserve the previous file. A malformed data file starts as an empty address book and is not overwritten by
-   startup itself, although a later successfully executed command that triggers saving can replace it.
+6. **Failure handling (NFR-06).** A command rejected because of invalid input, or because it cannot be applied (for
+   example, a duplicate engagement, an index outside the displayed list, or advancing a `Delivered` engagement), shall
+   leave the records, the displayed list and its indexes unchanged. A failed save shall be reported in the feedback
+   area, so that the user does not assume the change was saved. Starting the app with a malformed data file shall not
+   overwrite that file. The limits of failed saves (no rollback, non-atomic writes) are described in
+   [Persistence after commands](#persistence-after-commands).
 7. **Keyboard usability (NFR-07).** All supported engagement-management and query operations shall be available through
    typed commands without mandatory mouse interaction. After an ordinary successful command, the command field shall
    clear and remain focused; after closing command help, focus shall return to it. On rejection, the field shall retain
@@ -840,7 +842,7 @@ testers are expected to do more *exploratory* testing.
    Expected: It is accepted when otherwise valid and displayed in lowercase.
 4. Try `d/2025-02-29`, `d/2024-02-29`, and a non-ISO date.<br>
    Expected: Only the valid leap-day value `2024-02-29` is accepted.
-5. Add an event type containing repeated spaces or tabs.<br>
+5. Add an event type containing repeated spaces.<br>
    Expected: It is stored with each run of whitespace normalized to one space, provided the normalized value contains
    only letters, digits, spaces, and hyphens and is no longer than 40 characters.
 
@@ -854,9 +856,13 @@ testers are expected to do more *exploratory* testing.
    contains the supplied text, ignoring capitalization. The heading and displayed indexes update to match each result.
 3. Run `find n/Zachary`.<br>
    Expected: The list is empty and the feedback is `No matching engagements found.`
-4. Run `find n/Alice`, then try `find`, `find n/`, `find n/Alice p/9123`, and `find n/Alice n/Bob`.<br>
+4. Run `find s/ENQUIRY`, then `find s/book`.<br>
+   Expected: The first search finds both engagements, which are at the default `Enquiry` stage, ignoring
+   capitalization. The second is rejected with the supported-stage constraint, because stage searches need a complete
+   stage name, and the view stays unchanged.
+5. Run `find n/Alice`, then try `find`, `find n/`, `find n/Alice p/9123`, and `find n/Alice n/Bob`.<br>
    Expected: Each command is rejected and leaves the preceding view unchanged.
-5. Run `list`.<br>
+6. Run `list`.<br>
    Expected: All engagements reappear in insertion order.
 
 ### Detecting duplicate and similar contact details
@@ -897,8 +903,9 @@ testers are expected to do more *exploratory* testing.
 1. Dealing with missing/corrupted data files
 
    1. In a disposable folder, launch the app without `data/addressbook.json`.<br>
-      Expected: Sample engagements are loaded. The data file is created only when a command other than `list` or
-      `upcoming` successfully executes and triggers a save.
+      Expected: Sample engagements are loaded. The data file is created only when a data-changing command, such as
+      `add`, `edit`, `advance`, `delete` or `clear`, succeeds. `list`, `upcoming`, `find`, `help` and `exit` do not
+      create it.
 
    1. Close the app, replace `data/addressbook.json` with malformed JSON, and relaunch it.<br>
       Expected: An empty address book is displayed and the malformed file remains unchanged at startup.
@@ -933,10 +940,12 @@ JSON storage, UI cards, sample data and test utilities) had to be updated withou
   AB3's `FilteredList` in a `SortedList` and keeping index-based commands consistent with the displayed order.
 * `upcoming` shows the next seven calendar days using an injectable `Clock`, so date boundaries, time zones and
   midnight roll-over are testable.
-* `find` was redesigned to search one chosen field (name, phone, email or event type) by case-insensitive substring,
-  with phone separators ignored.
+* `find` was redesigned to search one chosen field: name, phone, email or event type by case-insensitive substring
+  (with phone separators ignored), or a complete stage name.
 * The list heading always states the active view and its size, and an engagement's full details open in a keyboard
   accessible dialog.
+* An event schedule chart summarizes the past, upcoming and later engagements in the current view, and each stage is
+  shown as a coloured badge.
 
 **Data integrity and input handling.** This was harder than in AB3 because a client can have many engagements:
 * Duplicate detection distinguishes client identity, engagement identity and similar contact details
@@ -948,8 +957,8 @@ JSON storage, UI cards, sample data and test utilities) had to be updated withou
 * Parsers reject unsupported, repeated and missing parameters with messages that name the offending parameter, and
   view-only commands never rewrite the data file.
 
-**Quality.** The project has more than 330 automated tests, including tests for date boundaries, storage failures and
-parser edge cases, and changes were integrated through pull requests (over 80 merged).
+**Quality.** The project has more than 400 automated tests, including tests for date boundaries, storage failures and
+parser edge cases, and changes were integrated through pull requests (over 100 merged).
 
 **Reuse.** Apart from the AB3 code base and the libraries listed in the [Acknowledgements](#acknowledgements), no
 code was reused from other projects.
