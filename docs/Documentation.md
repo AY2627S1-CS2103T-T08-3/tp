@@ -10,7 +10,7 @@ title: Documentation guide
 * To learn how to set up and maintain the project website, follow the guide [_[se-edu/guides] **Using Jekyll for project documentation**_](https://se-education.org/guides/tutorials/jekyll.html).
 * Note these points when adapting the documentation to a different project/product:
   * The 'Site-wide settings' section of the page linked above has information on how to update site-wide elements such as the top navigation bar.
-  * :bulb: In addition to updating content files, update `docs/_config.yml` when the site title, description,
+  * In addition to updating content files, update `docs/_config.yml` when the site title, description,
     navigation, or repository link changes.
 * If you are using IntelliJ for editing documentation files, you can consider enabling 'soft wrapping' for `*.md` files, as explained in [_[se-edu/guides] **Intellij IDEA: Useful settings**_](https://se-education.org/guides/tutorials/intellijUsefulSettings.html#enabling-soft-wrapping)
 

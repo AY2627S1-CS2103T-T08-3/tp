@@ -24,7 +24,7 @@ Refer to the guide [_Setting up and getting started_](SettingUp.md).
 
 <div markdown="span" class="alert alert-primary">
 
-:bulb: **Tip:** The `.puml` files used to create diagrams are in `docs/diagrams`. Refer to the [_PlantUML Tutorial_ at se-edu/guides](https://se-education.org/guides/tutorials/plantUml.html) to learn how to create and edit diagrams.
+**Tip:** The `.puml` files used to create diagrams are in `docs/diagrams`. Refer to the [_PlantUML Tutorial_ at se-edu/guides](https://se-education.org/guides/tutorials/plantUml.html) to learn how to create and edit diagrams.
 </div>
 
 ### Architecture
@@ -142,8 +142,11 @@ diagram above.
 
 ![Interactions Inside the Logic Component for the `delete 1` Command](images/DeleteSequenceDiagram.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `DeleteCommandParser` should end at the destroy marker (X), but due to a limitation of PlantUML, it continues to the end of the diagram.
+<div markdown="span" class="alert alert-info">**Note:** The lifeline for `DeleteCommandParser` should end at the destroy marker (X), but due to a limitation of PlantUML, it continues to the end of the diagram.
 </div>
+
+`DeleteCommand` resolves the displayed index itself: it reads the displayed list from `Model#getFilteredPersonList()`,
+selects the `Person` at that index, and passes that `Person` to `Model#deletePerson`.
 
 How the `Logic` component works:
 
@@ -189,7 +192,8 @@ The `Model` component,
 * stores the address book data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
 * represents each `Person` as one photography engagement containing a client's `Name`, `Phone`, `Email`,
   `EventType`, `EventDate`, and `Stage`.
-* represents the engagement stage as the `Stage` enum. `advance` uses `Stage#getNextStage()`, which maps each stage to
+* represents the engagement stage as the `Stage` enum. Each `Person` refers to one of the shared `Stage` constants, so the
+  diagram shows an association rather than composition. `advance` uses `Stage#getNextStage()`, which maps each stage to
   the next one explicitly, so adding a stage requires updating that mapping (changing the enum order alone does not
   change the behaviour of `advance`).
 * treats two `Person` objects as the same engagement (`Person#isSameEngagement`) when their name, phone, email, event
@@ -792,7 +796,7 @@ Course process requirements, such as incremental delivery, are not product NFRs.
 
 Given below are instructions to test the app manually.
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** These instructions only provide a starting point for testers to work on;
+<div markdown="span" class="alert alert-info">**Note:** These instructions only provide a starting point for testers to work on;
 testers are expected to do more *exploratory* testing.
 
 </div>

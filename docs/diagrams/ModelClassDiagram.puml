@@ -3,6 +3,7 @@
 skinparam arrowThickness 1.1
 skinparam arrowColor MODEL_COLOR
 skinparam classBackgroundColor MODEL_COLOR
+hide <<Rectangle>> stereotype
 
 Package Model as ModelPackage <<Rectangle>>{
 Class "<<interface>>\nReadOnlyAddressBook" as ReadOnlyAddressBook
@@ -49,7 +50,7 @@ Person *--> Phone
 Person *--> Email
 Person *--> EventType
 Person *--> EventDate
-Person *--> Stage
+Person --> Stage
 
 Person -[hidden]up--> I
 UniquePersonList -[hidden]right-> I

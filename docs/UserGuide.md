@@ -21,7 +21,7 @@ appear in multiple engagement records.
 1. Ensure that Java **25** is installed on your computer. In a terminal, run `java -version` and check that it reports version 25.<br>
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
-1. Download `shutterlink.jar` from the [ShutterLink releases page](https://github.com/AY2627S1-CS2103T-T08-3/tp/releases). Use a release that includes the commands described in this guide; the project website may describe changes newer than an older JAR.
+1. Download `shutterlink.jar` from the [latest ShutterLink release](https://github.com/AY2627S1-CS2103T-T08-3/tp/releases/latest). Use a release that includes the commands described in this guide; the project website may describe changes newer than an older JAR.
 
 1. Copy the file to a folder you can write to. Use the same folder each time you launch ShutterLink, because data paths are relative to your terminal's current folder.
 
@@ -55,9 +55,9 @@ The screenshots below use fictional engagements in the current interface. Your r
 | --- | --- |
 | **Command** | Type one command, then press Enter. Accepted commands clear the input; rejected commands retain the text for correction. Press Ctrl+L (Command+L on macOS) from the main window to focus this input without clearing unfinished text. |
 | **Feedback** | Read the command result or error. Results are shown in green, possible-typo warnings after a successful add or edit in amber, and errors in red. The text always states the outcome, so the colours are only a visual aid. |
-| Event schedule | Compare the proportions of past, upcoming and later engagements in the current displayed list. The legend shows each count. |
-| List heading | Check which view is active and how many engagements it contains. |
-| Engagement cards | Read each displayed index, client name, phone, email, event type, event date, and stage. Each stage has its own badge colour, so you can scan the workflow at a glance; the stage name is always shown as text too. An empty view shows `No engagements to display.` Scroll to see additional cards. Double-click an engagement card, or select it with the keyboard and press Enter, to open its complete details. |
+| **Event schedule** | Compare the proportions of past, upcoming and later engagements in the current displayed list. The legend shows each count. |
+| **List heading** | Check which view is active and how many engagements it contains. |
+| **Engagement cards** | Read each displayed index, client name, phone, email, event type, event date, and stage. Each stage has its own badge colour, so you can scan the workflow at a glance; the stage name is always shown as text too. An empty view shows `No engagements to display.` Scroll to see additional cards. Double-click an engagement card, or select it with the keyboard and press Enter, to open its complete details. |
 | **Help** | Open the command reference using the button, `help`, or F1. |
 
 In the event schedule chart, **Upcoming** means an event dated today through the following six calendar dates,
@@ -126,7 +126,7 @@ Repeating the same add command gives a duplicate error. Find and edit the existi
 
 <div markdown="block" class="alert alert-info">
 
-**:information_source: Notes about the command format:**<br>
+**Notes about the command format:**<br>
 
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
   For example, in `add n/NAME`, replace `NAME` with a value such as `John Doe`.
