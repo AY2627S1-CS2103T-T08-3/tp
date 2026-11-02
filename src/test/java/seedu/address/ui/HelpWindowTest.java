@@ -64,7 +64,7 @@ class HelpWindowTest {
     }
 
     @Test
-    void copyGuideLink_spaceKey_copiesUrlAndKeepsHelpOpen() throws Exception {
+    void copyGuideLink_spaceKey_copiesUrlAndResetsAfterReopen() throws Exception {
         JavaFxTestUtil.runOnJavaFxThread(() -> {
             HelpWindow helpWindow = new HelpWindow();
             try {
@@ -84,6 +84,10 @@ class HelpWindowTest {
 
                 fireKeyPressed(helpWindow, KeyCode.ESCAPE);
                 assertFalse(helpWindow.isShowing());
+
+                helpWindow.show();
+                assertEquals("Copy User Guide link", copyButton.getText());
+                assertTrue(helpWindow.isShowing());
             } finally {
                 helpWindow.hide();
             }

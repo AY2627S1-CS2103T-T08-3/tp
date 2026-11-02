@@ -72,6 +72,7 @@ public class HelpWindow extends UiPart<Stage> {
             + "\nRefer to the user guide: " + USERGUIDE_URL;
 
     private static final Logger logger = LogsCenter.getLogger(HelpWindow.class);
+    private static final String COPY_LINK_BUTTON_TEXT = "Copy User Guide link";
     private static final String FXML = "HelpWindow.fxml";
 
     private final Runnable onHidden;
@@ -148,6 +149,7 @@ public class HelpWindow extends UiPart<Stage> {
      */
     public void show() {
         logger.fine("Showing help page about the application.");
+        copyLinkButton.setText(COPY_LINK_BUTTON_TEXT);
         getRoot().show();
         getRoot().centerOnScreen();
     }
