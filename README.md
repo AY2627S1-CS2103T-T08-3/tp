@@ -51,3 +51,6 @@ help
 ## Acknowledgements
 
 This project is based on the AddressBook-Level3 project created by the [SE-EDU initiative](https://se-education.org).
+
+OpenAI Codex and Claude were used to assist with drafting and reviewing project code and documentation. The project
+team is responsible for reviewing and validating the final work.
