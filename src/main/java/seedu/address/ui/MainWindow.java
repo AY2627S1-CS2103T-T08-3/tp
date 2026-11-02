@@ -11,6 +11,8 @@ import javafx.geometry.Point2D;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
@@ -28,6 +30,8 @@ import seedu.address.model.person.Person;
  */
 public class MainWindow extends UiPart<Stage> {
 
+    private static final KeyCombination FOCUS_COMMAND_SHORTCUT =
+            new KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN);
     private static final String FXML = "MainWindow.fxml";
     private static final int UPCOMING_WINDOW_DAYS = 6;
 
@@ -79,7 +83,7 @@ public class MainWindow extends UiPart<Stage> {
 
         // Configure the UI
         setWindowDefaultSize(logic.getGuiSettings());
-        setHelpShortcut();
+        setKeyboardShortcuts();
 
         helpWindow = new HelpWindow(new Stage(), primaryStage, this::focusCommandBox);
     }
@@ -88,10 +92,13 @@ public class MainWindow extends UiPart<Stage> {
         return primaryStage;
     }
 
-    private void setHelpShortcut() {
+    private void setKeyboardShortcuts() {
         getRoot().getScene().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.F1) {
                 handleHelp();
+                event.consume();
+            } else if (FOCUS_COMMAND_SHORTCUT.match(event) && commandBox != null) {
+                commandBox.requestFocus();
                 event.consume();
             }
         });

@@ -53,7 +53,7 @@ The screenshots below use fictional engagements in the current interface. Your r
 
 | Area | What to use it for |
 | --- | --- |
-| **Command** | Type one command, then press Enter. Accepted commands clear the input; rejected commands retain the text for correction. |
+| **Command** | Type one command, then press Enter. Accepted commands clear the input; rejected commands retain the text for correction. Press Ctrl+L (Command+L on macOS) from the main window to focus this input without clearing unfinished text. |
 | **Feedback** | Read the command result or error. Results are shown in green, possible-typo warnings after a successful add or edit in amber, and errors in red. The text always states the outcome, so the colours are only a visual aid. |
 | Event schedule | Compare the proportions of past, upcoming and later engagements in the current displayed list. The legend shows each count. |
 | List heading | Check which view is active and how many engagements it contains. |
