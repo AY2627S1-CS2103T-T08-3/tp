@@ -19,7 +19,7 @@ Class EventDate
 Class EventType
 Class Name
 Class Phone
-Class Stage
+enum "<<enumeration>>\nStage" as Stage
 
 Class I #FFFFFF
 }
