@@ -5,6 +5,8 @@ import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
@@ -76,6 +78,9 @@ public class HelpWindow extends UiPart<Stage> {
 
     @FXML
     private Button closeButton;
+
+    @FXML
+    private Button copyLinkButton;
 
     @FXML
     private Label helpMessage;
@@ -152,6 +157,17 @@ public class HelpWindow extends UiPart<Stage> {
      */
     public boolean isShowing() {
         return getRoot().isShowing();
+    }
+
+    /**
+     * Copies the User Guide URL and reports whether the clipboard accepted it.
+     */
+    @FXML
+    private void copyUserGuideLink() {
+        ClipboardContent content = new ClipboardContent();
+        content.putString(USERGUIDE_URL);
+        boolean isCopied = Clipboard.getSystemClipboard().setContent(content);
+        copyLinkButton.setText(isCopied ? "Link copied" : "Copy failed");
     }
 
     /**

@@ -40,8 +40,10 @@
               </VBox>
             </content>
           </ScrollPane>
-          <HBox alignment="CENTER_RIGHT">
+          <HBox alignment="CENTER_RIGHT" spacing="8.0">
             <children>
+              <Button fx:id="copyLinkButton" mnemonicParsing="false" onAction="#copyUserGuideLink"
+                      text="Copy User Guide link" />
               <Button fx:id="closeButton" cancelButton="true" mnemonicParsing="false" onAction="#close" text="Close" />
             </children>
           </HBox>

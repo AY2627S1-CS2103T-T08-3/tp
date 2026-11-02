@@ -180,6 +180,10 @@ Format: `help`
 
 Use F1 or the **Help** button for the same panel. Scroll through the command reference, then press Escape or use **Close** to return to the command field. The underlying list and its indexes are retained. `help 123` is rejected because Help takes no arguments.
 
+Use **Copy User Guide link** to copy the guide's URL, then paste it into your browser. You can reach the button with
+Tab and activate it with Space. The button shows **Link copied** when copying succeeds, or **Copy failed** if the
+clipboard does not accept the URL; you can try again. Copying leaves Help open and replaces the clipboard contents.
+
 ![Current ShutterLink Help panel with command formats, explanations, and a Close button.](images/ug-help.png)
 
 
