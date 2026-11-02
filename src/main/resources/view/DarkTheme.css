@@ -671,10 +671,6 @@
     -fx-background-color: #0ea5e9;
 }
 
-.engagement-details-dialog .button:armed {
-    -fx-background-color: #0369a1;
-}
-
 .engagement-details-metadata {
     -fx-alignment: center-left;
     -fx-padding: 2 0 2 0;
@@ -700,10 +696,6 @@
 
 .engagement-details-dialog .copy-details-button:hover {
     -fx-background-color: #475569;
-}
-
-.engagement-details-dialog .copy-details-button:armed {
-    -fx-background-color: #1e293b;
 }
 
 /* Keep engagement headers and rows aligned. */
