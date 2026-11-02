@@ -233,7 +233,6 @@ public class MainWindow extends UiPart<Stage> {
         try {
             CommandResult commandResult = logic.execute(commandText);
             resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
-            personListPanel.setHeading(logic.getPersonListHeading());
 
             if (commandResult.isShowHelp()) {
                 handleHelp();
@@ -247,6 +246,8 @@ public class MainWindow extends UiPart<Stage> {
         } catch (CommandException | ParseException e) {
             resultDisplay.setErrorToUser(e.getMessage());
             throw e;
+        } finally {
+            personListPanel.setHeading(logic.getPersonListHeading());
         }
     }
 }
