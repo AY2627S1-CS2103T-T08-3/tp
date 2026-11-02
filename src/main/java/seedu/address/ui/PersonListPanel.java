@@ -187,6 +187,8 @@ public class PersonListPanel extends UiPart<Region> {
         ButtonType copyDetailsButtonType = new ButtonType("Copy details", ButtonBar.ButtonData.LEFT);
         ButtonType closeButtonType = new ButtonType("OK", ButtonBar.ButtonData.CANCEL_CLOSE);
         detailsDialog.getButtonTypes().setAll(copyDetailsButtonType, closeButtonType);
+        Button closeButton = (Button) detailsDialog.getDialogPane().lookupButton(closeButtonType);
+        closeButton.setDefaultButton(true); // Enter also closes the dialog
 
         Button copyDetailsButton = (Button) detailsDialog.getDialogPane().lookupButton(copyDetailsButtonType);
         copyDetailsButton.getStyleClass().add("copy-details-button");
