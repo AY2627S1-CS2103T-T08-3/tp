@@ -47,6 +47,16 @@
     -fx-background-color: #155e75;
 }
 
+#closeButton:focused, #copyLinkButton:focused {
+    -fx-border-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(56, 189, 248, 0.6), 6, 0, 0, 0);
+}
+
+#helpScrollPane:focused {
+    -fx-border-color: #38bdf8;
+    -fx-effect: dropshadow(gaussian, rgba(56, 189, 248, 0.6), 6, 0, 0, 0);
+}
+
 .scroll-bar {
     -fx-background-color: #0f172a;
 }
