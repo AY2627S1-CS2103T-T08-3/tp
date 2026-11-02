@@ -510,8 +510,10 @@ the same client repeat those three fields.
 
 **MSS**
 
-1.  User requests to find engagements, giving one client name, phone number, email address, or event type.
-2.  ShutterLink shows all engagements whose selected field contains the given value, ignoring capitalization.
+1.  User requests to find engagements, giving one client name, phone number, email address, event type or engagement stage.
+2.  ShutterLink shows matching engagements. Name, phone, email and event type
+    use case-insensitive substring matching. Stage uses case-insensitive exact
+    matching.
 
     Use case ends.
 
