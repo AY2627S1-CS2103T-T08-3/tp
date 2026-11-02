@@ -39,7 +39,7 @@ class PersonCardTooltipTest {
                         "phone", person.getPhone().value,
                         "email", person.getEmail().value,
                         "eventType", person.getEventType().value,
-                        "stage", "Stage: " + person.getStage(),
+                        "stage", person.getStage().toString(),
                         "eventDate", person.getEventDate().toString());
                 for (Map.Entry<String, String> field : expectedFields.entrySet()) {
                     Label label = (Label) card.getRoot().lookup("#" + field.getKey());

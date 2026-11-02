@@ -46,8 +46,8 @@
     <Label fx:id="eventType" minWidth="0" maxWidth="Infinity"
            textOverrun="ELLIPSIS" styleClass="contact-event-type"
            GridPane.columnIndex="3" />
-    <Label fx:id="stage" minWidth="0" maxWidth="Infinity"
-           textOverrun="ELLIPSIS" styleClass="cell_small_label"
+    <Label fx:id="stage" minWidth="0" maxWidth="-Infinity"
+           textOverrun="ELLIPSIS" styleClass="cell_small_label, stage-chip"
            GridPane.columnIndex="4" />
     <Label fx:id="eventDate" minWidth="0" maxWidth="Infinity"
            textOverrun="ELLIPSIS" styleClass="contact-event-date"

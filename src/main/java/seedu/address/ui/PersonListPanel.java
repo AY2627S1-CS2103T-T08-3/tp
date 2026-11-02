@@ -58,6 +58,9 @@ public class PersonListPanel extends UiPart<Region> {
         super(FXML);
         personListView.setItems(personList);
         personListView.setCellFactory(listView -> new PersonListViewCell());
+        Label placeholder = new Label("No engagements to display.");
+        placeholder.getStyleClass().add("list-placeholder");
+        personListView.setPlaceholder(placeholder);
         personListView.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 Person selectedPerson = personListView.getSelectionModel().getSelectedItem();
@@ -167,7 +170,8 @@ public class PersonListPanel extends UiPart<Region> {
         eventSummary.getStyleClass().add("engagement-details-summary");
 
         Label stageBadge = new Label(person.getStage().toString());
-        stageBadge.getStyleClass().add("engagement-details-stage");
+        stageBadge.getStyleClass().addAll("engagement-details-stage", "stage-chip",
+                PersonCard.getStageStyleClass(person.getStage()));
 
         HBox metadataBar = new HBox(12, eventSummary, stageBadge);
         metadataBar.getStyleClass().add("engagement-details-metadata");
