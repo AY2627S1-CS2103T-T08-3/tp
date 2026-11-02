@@ -9,7 +9,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.Clipboard;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
@@ -57,6 +59,34 @@ class HelpWindowTest {
             fireKeyPressed(helpWindow, KeyCode.ESCAPE);
             assertFalse(helpWindow.isShowing());
             assertEquals(1, hiddenCount.get());
+            return null;
+        });
+    }
+
+    @Test
+    void copyGuideLink_spaceKey_copiesUrlAndKeepsHelpOpen() throws Exception {
+        JavaFxTestUtil.runOnJavaFxThread(() -> {
+            HelpWindow helpWindow = new HelpWindow();
+            try {
+                helpWindow.show();
+                Button copyButton = (Button) helpWindow.getRoot().getScene().lookup("#copyLinkButton");
+
+                assertTrue(copyButton.isFocusTraversable());
+                copyButton.requestFocus();
+                copyButton.fireEvent(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.SPACE,
+                        false, false, false, false));
+                copyButton.fireEvent(new KeyEvent(KeyEvent.KEY_RELEASED, "", "", KeyCode.SPACE,
+                        false, false, false, false));
+
+                assertEquals(HelpWindow.USERGUIDE_URL, Clipboard.getSystemClipboard().getString());
+                assertEquals("Link copied", copyButton.getText());
+                assertTrue(helpWindow.isShowing());
+
+                fireKeyPressed(helpWindow, KeyCode.ESCAPE);
+                assertFalse(helpWindow.isShowing());
+            } finally {
+                helpWindow.hide();
+            }
             return null;
         });
     }

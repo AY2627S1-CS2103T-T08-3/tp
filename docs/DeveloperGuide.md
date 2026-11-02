@@ -100,6 +100,9 @@ The UI is implemented using JavaFX. Its main parts include:
 The layouts of these UI parts are defined in FXML files under `src/main/resources/view`. For example,
 `PersonListCard.fxml` defines the layout for an individual engagement card.
 
+`HelpWindow` provides a keyboard-accessible button that copies `USERGUIDE_URL` to the system clipboard. Its feedback
+reflects the clipboard write result, and the action leaves Help open without changing or saving engagement data.
+
 The `UI` component,
 
 * keeps a reference to `Logic` and sends user commands through it;
