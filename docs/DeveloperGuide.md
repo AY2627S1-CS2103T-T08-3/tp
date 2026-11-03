@@ -12,6 +12,11 @@ title: Developer Guide
 This project (ShutterLink) is based on the AddressBook-Level3 project created by the [SE-EDU initiative](https://se-education.org).
 It uses JavaFX for the UI, Jackson for JSON serialization, JUnit 5 for testing, and Gradle for builds.
 
+Notable uses of AI: OpenAI Codex and Claude were used to draft and refactor substantial portions of the
+AddressBook-Level3 codebase for ShutterLink, add new functionality, refine existing features, and improve the UI.
+They were also used to draft substantial portions of project documentation and review code and documentation changes.
+The project team reviewed and validated the final work.
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Setting up, getting started**
